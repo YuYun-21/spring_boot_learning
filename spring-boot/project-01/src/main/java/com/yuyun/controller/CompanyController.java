@@ -17,7 +17,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("company")
-@Api(tags = "企业信息表")
+@Api(tags = "企业信息")
 public class CompanyController {
     @Autowired
     private CompanyService companyService;
