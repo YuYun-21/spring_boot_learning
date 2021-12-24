@@ -9,10 +9,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  */
 @MapperScan("com.yuyun.mapper")
 @SpringBootApplication
-public class Project01Application {
+public class SpringBoot03Application {
 
     public static void main(String[] args) {
-        SpringApplication.run(Project01Application.class, args);
+        SpringApplication.run(SpringBoot03Application.class, args);
     }
 
 }

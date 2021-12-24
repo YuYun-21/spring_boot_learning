@@ -10,9 +10,9 @@
     </parent>
 
     <groupId>com.yuyun</groupId>
-    <artifactId>project-01</artifactId>
+    <artifactId>springboot-03</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>project-01</name>
+    <name>springboot-03</name>
     <description>SpringBoot项目，集成MySQL8、MyBatis-Plus、Knife4j</description>
 
     <properties>
