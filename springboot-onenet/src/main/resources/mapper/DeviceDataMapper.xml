@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.yuyun.mapper.DeviceDataMapper">
+
+    <resultMap type="com.yuyun.dto.DeviceDataDTO" id="deviceDataMap">
+        <result property="id" column="id"/>
+        <result property="productId" column="product_id"/>
+        <result property="deviceId" column="device_id"/>
+        <result property="dataStream" column="data_stream"/>
+        <result property="dataValue" column="data_value"/>
+        <result property="dateTime" column="date_time"/>
+    </resultMap>
+
+</mapper>
