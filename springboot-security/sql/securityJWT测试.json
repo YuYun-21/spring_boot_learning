@@ -1,0 +1,140 @@
+{
+	"info": {
+		"_postman_id": "1e964df1-973c-46df-89dd-ad57739277e9",
+		"name": "security JWT测试",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "localhost:8001/public/login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\":\"admin\",\r\n    \"password\":\"123456\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8001/public/login",
+					"host": [
+						"localhost"
+					],
+					"port": "8001",
+					"path": [
+						"public",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8001/manage/testSecurityResource",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Passport",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJST0xFIjoiYWRtaW4iLCJleHAiOjE2NDgxMDY1NTEsInVzZXJpZCI6IjEyMzQ1Njc4OWFiYyJ9.JATo1Pv-1ABAU-DtIonasSuqB_L_hQ-gFRfVrX95DWL2q0XSzPIrJSK5T_BFTVSYxEyGaupMUuRAI_T2yoa9xQ",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "localhost:8001/manage/testSecurityResource",
+					"host": [
+						"localhost"
+					],
+					"port": "8001",
+					"path": [
+						"manage",
+						"testSecurityResource"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8001/manage/testSecurityResource2",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Passport",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJST0xFIjoiYWRtaW4iLCJleHAiOjE2NDgxMDY5MjYsInVzZXJpZCI6IjExMTExMTEifQ.scwFtVarx-WNBj-Pf3X1-Is936UAMoFuiPlcCsC3HjvV_5UBKD1X2dXvx4e6oUhkrQOGYtXywcF1nGLjlxGOaQ",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "localhost:8001/manage/testSecurityResource2",
+					"host": [
+						"localhost"
+					],
+					"port": "8001",
+					"path": [
+						"manage",
+						"testSecurityResource2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8001/auth/refreshToken",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Passport",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJST0xFIjoiYWRtaW4iLCJleHAiOjE2NDgxMDY1NTEsInVzZXJpZCI6IjEyMzQ1Njc4OWFiYyJ9.JATo1Pv-1ABAU-DtIonasSuqB_L_hQ-gFRfVrX95DWL2q0XSzPIrJSK5T_BFTVSYxEyGaupMUuRAI_T2yoa9xQ",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "localhost:8001/auth/refreshToken",
+					"host": [
+						"localhost"
+					],
+					"port": "8001",
+					"path": [
+						"auth",
+						"refreshToken"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8001/public/login2",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\":\"测试昵称1\",\r\n    \"password\":\"12345\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8001/public/login2",
+					"host": [
+						"localhost"
+					],
+					"port": "8001",
+					"path": [
+						"public",
+						"login2"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
