@@ -1,8 +1,10 @@
 package com.yuyun;
 
+import cn.hutool.http.HttpRequest;
+import cn.hutool.http.HttpResponse;
 import cn.hutool.http.HttpUtil;
+import com.alibaba.fastjson.JSONObject;
 import com.yuyun.task.DynamicCronTask;
-import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -32,6 +34,12 @@ class SpringbootTestApplicationTests {
         String response1 = HttpUtil.get(url);
 
         System.out.println("response1 = " + response1);
+
+        HttpRequest httpRequest = HttpRequest.get(url);
+        System.out.println("httpRequest = " + httpRequest);
+        HttpResponse execute = httpRequest.execute();
+        System.out.println("execute = " + execute);
+        System.out.println("execute.body() = " + execute.body());
 
     }
 
