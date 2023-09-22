@@ -22,6 +22,10 @@ public enum CommandType {
      */
     CHAT(10002),
     /**
+     * 加入群聊
+     */
+    JOIN_GROUP(10003),
+    /**
      * 错误
      */
     ERROR(-1),

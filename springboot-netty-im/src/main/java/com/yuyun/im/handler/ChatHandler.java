@@ -39,6 +39,9 @@ public class ChatHandler {
                     }
                     channel.writeAndFlush(Result.success("私聊消息(" + chatMessage.getNickname() + ")", chatMessage.getContent()));
                     break;
+                case GROUP:
+                    IMServer.GROUP.writeAndFlush(Result.success("群消息，发送者：" + chatMessage.getNickname(), chatMessage.getContent()));
+                    break;
                 default:
                     context.channel().writeAndFlush(Result.fail("不支持的消息类型！"));
             }
