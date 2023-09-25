@@ -16,7 +16,7 @@ import java.util.*;
  * @since 2023-09-22
  */
 @Slf4j
-public class NioSocketServer {
+public class NioSelectorServer {
 
     static List<SocketChannel> channelList = new ArrayList<>();
 
