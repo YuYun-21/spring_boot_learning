@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 
 /**
  * WebSocket处理
+ * TextWebSocketFrame 表示一个文本帧（frame）
  *
  * @author hyh
  * @since 2023-09-21
