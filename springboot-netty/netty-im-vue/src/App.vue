@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
+import NettyIm from './components/NettyIm.vue'
 </script>
 
 <template>
-  <HelloWorld msg="Vite + Vue" />
+  <NettyIm msg="Vue" />
 </template>
 
 <style scoped>
