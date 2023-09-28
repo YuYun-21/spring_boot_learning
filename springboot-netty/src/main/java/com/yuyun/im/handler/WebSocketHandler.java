@@ -42,4 +42,16 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<TextWebSocketF
             context.channel().writeAndFlush(Result.fail("失败：" + e.getMessage()));
         }
     }
+
+    @Override
+    public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
+        log.info("已连接: {} ----------------", ctx.channel().remoteAddress());
+        super.handlerAdded(ctx);
+    }
+
+    @Override
+    public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
+        log.info("连接断开: {} ---------------", ctx.channel().remoteAddress());
+        super.handlerRemoved(ctx);
+    }
 }

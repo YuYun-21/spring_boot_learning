@@ -35,7 +35,7 @@ public class IMServer {
 
     public static ChannelGroup GROUP = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
 
-    public static void start() throws InterruptedException {
+    public static void main(String[] args) throws InterruptedException {
         EventLoopGroup parentGroup = new NioEventLoopGroup();
         EventLoopGroup childGroup = new NioEventLoopGroup();
 

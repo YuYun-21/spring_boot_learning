@@ -9,6 +9,7 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import io.netty.util.internal.StringUtil;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Objects;
 
@@ -18,6 +19,7 @@ import java.util.Objects;
  * @author hyh
  * @since 2023-09-21
  */
+@Slf4j
 public class ChatHandler {
     public static void execute(ChannelHandlerContext context, TextWebSocketFrame frame) {
 
@@ -26,6 +28,7 @@ public class ChatHandler {
             switch (MessageType.match(chatMessage.getType())) {
                 // 私聊
                 case PRIVATE:
+                    log.info("私聊: {} ------------------", context.channel().remoteAddress());
                     String messageTarget = chatMessage.getTarget();
 
                     if (StringUtil.isNullOrEmpty(messageTarget)) {
@@ -40,6 +43,7 @@ public class ChatHandler {
                     channel.writeAndFlush(Result.success("私聊消息(" + chatMessage.getNickname() + ")", chatMessage.getContent()));
                     break;
                 case GROUP:
+                    log.info("群聊: {} ------------------", context.channel().remoteAddress());
                     IMServer.GROUP.writeAndFlush(Result.success("群消息，发送者：" + chatMessage.getNickname(), chatMessage.getContent()));
                     break;
                 default:

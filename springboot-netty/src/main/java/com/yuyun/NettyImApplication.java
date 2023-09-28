@@ -9,7 +9,6 @@ public class NettyImApplication {
 
     public static void main(String[] args) throws InterruptedException {
         SpringApplication.run(NettyImApplication.class, args);
-        IMServer.start();
     }
 
 }

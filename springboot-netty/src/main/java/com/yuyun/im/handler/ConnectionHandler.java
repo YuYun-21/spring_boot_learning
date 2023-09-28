@@ -5,6 +5,7 @@ import com.yuyun.im.command.Command;
 import com.yuyun.im.IMServer;
 import com.yuyun.im.Result;
 import io.netty.channel.ChannelHandlerContext;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 连接信息处理
@@ -12,6 +13,7 @@ import io.netty.channel.ChannelHandlerContext;
  * @author hyh
  * @since 2023-09-21
  */
+@Slf4j
 public class ConnectionHandler {
     public static void execute(ChannelHandlerContext context, Command command) {
 
@@ -25,6 +27,7 @@ public class ConnectionHandler {
 
         context.channel().writeAndFlush(Result.success("与服务端连接建立成功！"));
         context.channel().writeAndFlush(Result.success(JSON.toJSONString(IMServer.USERS.keySet())));
+        log.info("建立单聊连接: {} -------------", context.channel().remoteAddress());
     }
 
 }
