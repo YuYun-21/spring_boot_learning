@@ -32,9 +32,6 @@
 <script setup lang="ts">
 import { onMounted, reactive, ref } from 'vue';
 
-
-defineProps<{ msg: string }>()
-
 // const wsClient = ref(new WebSocket("ws://localhost:8088"))
 
 const status = ref('OPEN')
