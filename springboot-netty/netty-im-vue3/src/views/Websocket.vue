@@ -44,6 +44,7 @@
           <li v-for="item in getList" :key="item.time" class="mt-2">
             <div class="flex items-center">
               <span class="mr-2 text-primary font-medium">收到消息:</span>
+              {{item}}
             </div>
             <div>
             </div>
@@ -55,6 +56,7 @@
 </template>
 <script lang="ts" setup>
 import { useWebSocket } from '@vueuse/core'
+import { computed, watchEffect, reactive, ref } from 'vue';
 
 defineOptions({ name: 'InfraWebSocket' })
 

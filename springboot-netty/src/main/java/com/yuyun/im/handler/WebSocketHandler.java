@@ -36,9 +36,11 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<TextWebSocketF
                     JoinGroupHandler.execute(context);
                     break;
                 default:
+                    log.info("不支持的CODE：" + frame.text());
                     context.channel().writeAndFlush(Result.fail("不支持的CODE"));
             }
         } catch (Exception e) {
+            log.info("失败：" + e.getMessage());
             context.channel().writeAndFlush(Result.fail("失败：" + e.getMessage()));
         }
     }
