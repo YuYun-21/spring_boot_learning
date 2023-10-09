@@ -3,6 +3,10 @@
     <el-container>
       <el-header>
         <h3>WebSocket聊天</h3>
+        <div class="flex items-center">
+          <span class="text-lg font-medium mr-4"> 连接状态: </span>
+          <el-tag :color="getTagColor">{{ status }}</el-tag>
+        </div>
         <el-form :model="form">
           <el-form-item style="align-items: center" required label="websocket地址：">
             <el-select v-model="server" style="width: 350px" clearable placeholder="Select">
@@ -19,16 +23,18 @@
       </el-header>
       <el-container>
         <el-aside width="500px">
-          <div class="flex items-center">
-            <span class="text-lg font-medium mr-4"> 连接状态: </span>
-            <el-tag :color="getTagColor">{{ status }}</el-tag>
+          <div style="margin-top: 10px">
+            <span>昵称：</span>
+            <el-input style="width: 150px;margin-right: 10px"></el-input>
+            <el-button type="primary" @click="toggle">上线</el-button>
           </div>
+
         </el-aside>
         <el-container>
           <el-main>
-            <dev>
+            <div>
 
-            </dev>
+            </div>
           </el-main>
           <el-footer>Footer</el-footer>
         </el-container>
@@ -38,7 +44,7 @@
 </template>
 
 <script setup lang="ts">
-import {computed, onMounted, reactive, ref, Ref} from 'vue';
+import {computed, reactive, ref} from 'vue';
 import {useWebSocket} from '@vueuse/core'
 
 // const wsClient = ref(new WebSocket("ws://localhost:8088"))
@@ -51,6 +57,19 @@ const options: [] = ref([
     value: 'ws://localhost:8088'
   }
 ])
+
+interface Command {
+  code: number,
+  nickname: string,
+  target: string,
+  content: string,
+  type: number
+}
+
+const command: Command = {
+  code: '',
+  nickname: ''
+}
 
 const {data, status, close, open, send, ws} = useWebSocket(address, {
   heartbeat: false,
@@ -105,9 +124,6 @@ function connect() {
 
 }
 
-onMounted(() => {
-//  connect()
-})
 
 </script>
 
