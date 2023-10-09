@@ -7,9 +7,10 @@
           <span class="text-lg font-medium mr-4"> 连接状态: </span>
           <el-tag :color="getTagColor">{{ status }}</el-tag>
         </div>
-        <el-form :model="form">
-          <el-form-item style="align-items: center" required label="websocket地址：">
-            <el-select v-model="server" style="width: 350px" clearable placeholder="Select">
+        <el-form :model="websocketForm" :rules="rules" ref="ruleFormRef">
+          <el-form-item style="align-items: center" required label="websocket地址：" prop="server">
+            <el-select v-model="websocketForm.server" style="width: 350px" filterable allow-create clearable
+                       placeholder="websocket地址">
               <el-option
                   v-for="item in options"
                   :key="item.value"
@@ -17,7 +18,7 @@
                   :value="item.value"
               />
             </el-select>
-            <el-button type="primary" @click="toggle">{{ getIsOpen ? '关闭连接' : '连接' }}</el-button>
+            <el-button type="primary" @click="toggle(ruleFormRef)">{{ getIsOpen ? '关闭连接' : '连接' }}</el-button>
           </el-form-item>
         </el-form>
       </el-header>
@@ -46,30 +47,45 @@
 <script setup lang="ts">
 import {computed, reactive, ref} from 'vue';
 import {useWebSocket} from '@vueuse/core'
+import type {FormInstance, FormRules} from "element-plus";
 
 // const wsClient = ref(new WebSocket("ws://localhost:8088"))
 
 const server = ref<string>()
 const address = ref<string>()
-const options: [] = ref([
+const options = ref([
   {
     label: 'ws://localhost:8088',
     value: 'ws://localhost:8088'
   }
 ])
 
-interface Command {
-  code: number,
-  nickname: string,
-  target: string,
-  content: string,
-  type: number
+const command = {
+  code: 11,
+  nickname: '大声道',
+  target: '',
+  content: '',
+  type: 1
 }
 
-const command: Command = {
-  code: '',
-  nickname: ''
+const ruleFormRef = ref<FormInstance>()
+
+interface RuleForm {
+  server: string
 }
+
+const websocketForm = reactive<RuleForm>({
+  server: ''
+})
+const rules = reactive<FormRules<RuleForm>>({
+  server: [
+    {
+      required: true,
+      message: '请选择或填写websocket地址',
+      trigger: 'change',
+    }
+  ]
+})
 
 const {data, status, close, open, send, ws} = useWebSocket(address, {
   heartbeat: false,
@@ -80,18 +96,22 @@ const {data, status, close, open, send, ws} = useWebSocket(address, {
 const getIsOpen = computed(() => status.value === 'OPEN')
 const getTagColor = computed(() => (getIsOpen.value ? '#67C23A' : '#F56C6C'))
 
-function toggle() {
-  console.log(status, 1)
-  console.log(status.value, 2)
-  console.log(server, 3)
-  // 'CONNECTING' | 'CLOSED'
-  if (status.value === 'OPEN') {
-    close()
-  } else {
-    close()
-    address.value = 'ws://localhost:8088'
-    open()
-  }
+const toggle = async (formEl: FormInstance | undefined) => {
+  if (!formEl) return
+  await formEl.validate((valid, fields) => {
+    if (valid) {
+      console.log('submit!')
+      // 'CONNECTING' | 'CLOSED'
+      if (status.value === 'OPEN') {
+        close()
+      } else {
+        address.value = websocketForm.server
+        open()
+      }
+    } else {
+      console.log('error submit!', fields)
+    }
+  })
 }
 
 const content = reactive({
@@ -102,28 +122,6 @@ const content = reactive({
 const form = reactive({
   name: ""
 })
-
-function connect() {
-  console.log("连接成功", wsClient)
-  wsClient.value.onopen = function () {
-    status.value = "OPEN"
-    console.log("已连接")
-  }
-  wsClient.value.onmessage = function (msg) {
-    console.log("收到服务端消息", msg)
-  }
-  wsClient.value.onclose = function (msg) {
-    status.value = "CLOSE"
-    console.log("断开连接", msg)
-  }
-  wsClient.value.onerror = function (msg) {
-    status.value = "FAIL"
-    console.log("连接失败", msg)
-  }
-  wsClient.value.send(JSON.stringify(content))
-
-}
-
 
 </script>
 
