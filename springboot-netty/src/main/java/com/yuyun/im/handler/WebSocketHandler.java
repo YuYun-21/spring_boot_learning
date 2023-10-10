@@ -1,9 +1,10 @@
 package com.yuyun.im.handler;
 
 import com.alibaba.fastjson2.JSON;
+import com.yuyun.im.Result;
 import com.yuyun.im.command.Command;
 import com.yuyun.im.enums.CommandType;
-import com.yuyun.im.Result;
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
@@ -53,7 +54,8 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<TextWebSocketF
 
     @Override
     public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
-        log.info("连接断开: {} ---------------", ctx.channel().remoteAddress());
+        Channel channel = ctx.channel();
+        log.info("连接断开: {} ---------------", channel.remoteAddress());
         super.handlerRemoved(ctx);
     }
 }

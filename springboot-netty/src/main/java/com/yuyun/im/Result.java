@@ -20,6 +20,8 @@ import java.time.LocalDateTime;
 public class Result implements Serializable {
     private static final long serialVersionUID = 1L;
 
+    private Integer code;
+
     /**
      * 消息内容
      */
@@ -37,21 +39,31 @@ public class Result implements Serializable {
 
     public static TextWebSocketFrame success(String data) {
 
-        return new TextWebSocketFrame(JSON.toJSONString(new Result("Success", data, LocalDateTime.now())));
+        return new TextWebSocketFrame(JSON.toJSONString(new Result(2001, "Success", data, LocalDateTime.now())));
+    }
+
+    public static TextWebSocketFrame success(Integer code, String data) {
+
+        return new TextWebSocketFrame(JSON.toJSONString(new Result(code, "Success", data, LocalDateTime.now())));
     }
 
     public static TextWebSocketFrame success(String msg, String data) {
 
-        return new TextWebSocketFrame(JSON.toJSONString(new Result(msg, data, LocalDateTime.now())));
+        return new TextWebSocketFrame(JSON.toJSONString(new Result(2001, msg, data, LocalDateTime.now())));
     }
 
     public static TextWebSocketFrame fail(String data) {
 
-        return new TextWebSocketFrame(JSON.toJSONString(new Result("error", data, LocalDateTime.now())));
+        return new TextWebSocketFrame(JSON.toJSONString(new Result(5001, "error", data, LocalDateTime.now())));
+    }
+
+    public static TextWebSocketFrame fail(Integer code, String data) {
+
+        return new TextWebSocketFrame(JSON.toJSONString(new Result(code, "error", data, LocalDateTime.now())));
     }
 
     public static TextWebSocketFrame fail(String errorMsg, String data) {
 
-        return new TextWebSocketFrame(JSON.toJSONString(new Result(errorMsg, data, LocalDateTime.now())));
+        return new TextWebSocketFrame(JSON.toJSONString(new Result(5001, errorMsg, data, LocalDateTime.now())));
     }
 }

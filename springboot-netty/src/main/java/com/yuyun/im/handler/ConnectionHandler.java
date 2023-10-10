@@ -4,6 +4,7 @@ import com.alibaba.fastjson2.JSON;
 import com.yuyun.im.command.Command;
 import com.yuyun.im.IMServer;
 import com.yuyun.im.Result;
+import com.yuyun.im.enums.CodeType;
 import io.netty.channel.ChannelHandlerContext;
 import lombok.extern.slf4j.Slf4j;
 
@@ -25,9 +26,9 @@ public class ConnectionHandler {
 
         IMServer.USERS.put(command.getNickname(), context.channel());
 
-        context.channel().writeAndFlush(Result.success("与服务端连接建立成功！"));
-        context.channel().writeAndFlush(Result.success(JSON.toJSONString(IMServer.USERS.keySet())));
-        log.info("建立单聊连接: {} -------------", context.channel().remoteAddress());
+        context.channel().writeAndFlush(Result.success(CodeType.SUCCESS_CONNECTION.getCode(), "与服务端连接建立成功！"));
+        context.channel().writeAndFlush(Result.success(CodeType.USER_LIST.getCode(), JSON.toJSONString(IMServer.USERS.keySet())));
+        log.info("建立连接: {} -------------", context.channel().remoteAddress());
     }
 
 }
