@@ -26,16 +26,49 @@
         <el-aside width="500px">
           <div style="margin-top: 10px">
             <span>昵称：</span>
-            <el-input style="width: 150px;margin-right: 10px"></el-input>
-            <el-button type="primary" @click="toggle">上线</el-button>
+            <el-input v-model="command.nickname" style="width: 150px;margin-right: 10px"></el-input>
+            <el-button type="primary" @click="connect">上线</el-button>
           </div>
-
+          <el-card style="margin-top: 15px">
+            <template #header>
+              <div class="card-header">
+                <span>人员名单</span>
+              </div>
+            </template>
+            <div class="max-h-80 overflow-auto">
+              <ul>
+                <li v-for="item in state.userList" :key="item.msg" class="mt-2">
+                  <div class="flex items-center">
+                    {{ item }}
+                  </div>
+                  <div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </el-card>
         </el-aside>
         <el-container>
           <el-main>
-            <div>
-
-            </div>
+            <el-card :gutter="12" class="w-1/2" shadow="always">
+              <template #header>
+                <div class="card-header">
+                  <span>消息记录</span>
+                </div>
+              </template>
+              <div class="max-h-80 overflow-auto">
+                <ul>
+                  <li v-for="item in state.recordList" :key="item.time" class="mt-2">
+                    <div class="flex items-center">
+                      <span class="mr-2 text-primary font-medium">收到消息:</span>
+                      {{ item }}
+                    </div>
+                    <div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </el-card>
           </el-main>
           <el-footer>Footer</el-footer>
         </el-container>
@@ -45,13 +78,11 @@
 </template>
 
 <script setup lang="ts">
-import {computed, reactive, ref} from 'vue';
+import {computed, reactive, ref, watch} from 'vue';
 import {useWebSocket} from '@vueuse/core'
 import type {FormInstance, FormRules} from "element-plus";
+import {ElMessage} from "element-plus";
 
-// const wsClient = ref(new WebSocket("ws://localhost:8088"))
-
-const server = ref<string>()
 const address = ref<string>()
 const options = ref([
   {
@@ -60,13 +91,21 @@ const options = ref([
   }
 ])
 
-const command = {
-  code: 11,
-  nickname: '大声道',
+interface Command {
+  code: number,
+  nickname: string,
+  target: string,
+  content: string,
+  type: number
+}
+
+const command = reactive<Command>({
+  code: NaN,
+  nickname: '',
   target: '',
   content: '',
-  type: 1
-}
+  type: NaN
+})
 
 const ruleFormRef = ref<FormInstance>()
 
@@ -77,6 +116,7 @@ interface RuleForm {
 const websocketForm = reactive<RuleForm>({
   server: ''
 })
+
 const rules = reactive<FormRules<RuleForm>>({
   server: [
     {
@@ -113,6 +153,43 @@ const toggle = async (formEl: FormInstance | undefined) => {
     }
   })
 }
+
+const connect = async () => {
+  command.code = 10001
+  const value = JSON.stringify(command)
+  send(value)
+}
+
+watch(data, () => {
+  console.log(data, 'data')
+  if (data.value) {
+    try {
+      const res = JSON.parse(data.value)
+      if (res.code === '20001') {
+        ElMessage({
+          type: "success",
+          showClose: true,
+          message: res.data
+        })
+      }
+      if (res.code === '20002') {
+        userList.push(res.data)
+      }
+    } catch (error) {
+      console.log('报错')
+    }
+  }
+})
+
+const state = reactive({
+  recordList: [] as {
+    msg: string;
+    data: string
+    time: string;
+  }[]
+})
+
+const userList = reactive<string>([])
 
 const content = reactive({
   code: 10001,
