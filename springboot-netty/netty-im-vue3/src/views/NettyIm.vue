@@ -1,5 +1,5 @@
 <template>
-  <div class="common-layout">
+  <div style="height: 100dvh">
     <el-container>
       <el-header>
         <h3>WebSocket聊天</h3>
@@ -20,53 +20,40 @@
             </el-select>
             <el-button type="primary" @click="toggle(ruleFormRef)">{{ getIsOpen ? '关闭连接' : '连接' }}</el-button>
           </el-form-item>
+          <el-form-item>
+            <div style="margin-top: 10px">
+              <span>昵称：</span>
+              <el-input v-model="command.nickname" style="width: 150px;margin-right: 10px"></el-input>
+              <el-button type="primary" @click="connect">上线</el-button>
+            </div>
+          </el-form-item>
         </el-form>
       </el-header>
       <el-container>
-        <el-aside width="500px">
-          <div style="margin-top: 10px">
-            <span>昵称：</span>
-            <el-input v-model="command.nickname" style="width: 150px;margin-right: 10px"></el-input>
-            <el-button type="primary" @click="connect">上线</el-button>
-          </div>
-          <el-card style="margin-top: 15px">
+        <el-aside>
+          <el-card style="margin: 0px auto" shadow="always">
             <template #header>
-              <div class="card-header">
-                <span>人员名单</span>
-              </div>
+              <span>私聊人员名单</span>
             </template>
-            <div class="max-h-80 overflow-auto">
-              <ul>
-                <li v-for="item in state.userList" :key="item.msg" class="mt-2">
-                  <div class="flex items-center">
-                    {{ item }}
-                  </div>
-                  <div>
-                  </div>
-                </li>
-              </ul>
-            </div>
+            <el-row :gutter="20" v-for="item in userList" :key="item" style="margin-bottom: 5px">
+              <el-col :span="8"></el-col>
+              <el-col :span="8">
+                <el-button type="primary" plain style="width: 100%;">
+                  {{ item }}
+                </el-button>
+              </el-col>
+              <el-col :span="8"></el-col>
+            </el-row>
           </el-card>
         </el-aside>
         <el-container>
           <el-main>
-            <el-card :gutter="12" class="w-1/2" shadow="always">
+            <el-card style="height: 98%;" shadow="always">
               <template #header>
-                <div class="card-header">
-                  <span>消息记录</span>
-                </div>
+                <span>消息记录</span>
               </template>
-              <div class="max-h-80 overflow-auto">
-                <ul>
-                  <li v-for="item in state.recordList" :key="item.time" class="mt-2">
-                    <div class="flex items-center">
-                      <span class="mr-2 text-primary font-medium">收到消息:</span>
-                      {{ item }}
-                    </div>
-                    <div>
-                    </div>
-                  </li>
-                </ul>
+              <div class="news" v-for="item in state.recordList" :key="item.time">
+                <el-tag :style="newsStyle">{{ item }}</el-tag>
               </div>
             </el-card>
           </el-main>
@@ -160,20 +147,30 @@ const connect = async () => {
   send(value)
 }
 
+const newsStyle = ref()
+const userList = reactive<string[]>([])
+
 watch(data, () => {
   console.log(data, 'data')
   if (data.value) {
     try {
       const res = JSON.parse(data.value)
-      if (res.code === '20001') {
+      console.log(res)
+      if (res.code === 20001) {
         ElMessage({
           type: "success",
           showClose: true,
           message: res.data
         })
       }
-      if (res.code === '20002') {
-        userList.push(res.data)
+      if (res.code === 20002) {
+        JSON.parse(res.data).forEach((key: string) => {
+          userList.push(key)
+        });
+          newsStyle.value = {
+            float: 'right'
+          }
+        state.recordList.push(res.data)
       }
     } catch (error) {
       console.log('报错')
@@ -183,13 +180,13 @@ watch(data, () => {
 
 const state = reactive({
   recordList: [] as {
-    msg: string;
+    msg: string
     data: string
-    time: string;
+    time: string
+    type: number
   }[]
 })
 
-const userList = reactive<string>([])
 
 const content = reactive({
   code: 10001,
@@ -204,7 +201,7 @@ const form = reactive({
 
 <style scoped lang="scss">
 .el-container {
-  height: auto;
+  height: 800px;
 }
 
 .el-header {
@@ -213,15 +210,29 @@ const form = reactive({
 }
 
 .el-aside {
+  width: 600px;
   background-color: #d9ecff;
 }
 
 .el-main {
-  height: 300px;
+  height: 600px;
   background-color: #ecf5ff;
 }
 
 .el-footer {
+  height: 200px;
   background-color: #c6e2ff;
+}
+
+.news {
+  .el-tag {
+    word-break: break-word;
+    height: auto;
+    margin-bottom: 8px;
+    text-align: left;
+    line-height: 2;
+    width: 51%;
+    float: left;
+  }
 }
 </style>
