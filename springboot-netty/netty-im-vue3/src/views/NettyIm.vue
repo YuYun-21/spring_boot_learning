@@ -38,7 +38,7 @@
             <el-row :gutter="20" v-for="item in userList" :key="item" style="margin-bottom: 5px">
               <el-col :span="8"></el-col>
               <el-col :span="8">
-                <el-button type="primary" plain style="width: 100%;">
+                <el-button @click="privateChat(item)" type="primary" plain style="width: 100%;">
                   {{ item }}
                 </el-button>
               </el-col>
@@ -187,6 +187,11 @@ const state = reactive({
   }[]
 })
 
+function privateChat(item:string){
+
+
+
+}
 
 const content = reactive({
   code: 10001,
@@ -226,7 +231,8 @@ const form = reactive({
 
 .news {
   .el-tag {
-    word-break: break-word;
+    word-wrap: anywhere;
+    white-space: pre-wrap;
     height: auto;
     margin-bottom: 8px;
     text-align: left;
