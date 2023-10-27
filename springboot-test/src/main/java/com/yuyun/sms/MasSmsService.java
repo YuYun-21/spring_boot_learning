@@ -6,14 +6,13 @@ import cn.hutool.extra.spring.SpringUtil;
 import cn.hutool.http.HttpUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.yuyun.sms.service.SendSmsInfoService;
 import com.yuyun.sms.utils.MasErrorCode;
 import com.yuyun.sms.utils.MasResult;
 import com.yuyun.sms.utils.MasUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.tomcat.util.buf.StringUtils;
 
 import java.io.UnsupportedEncodingException;
-import java.util.Date;
 import java.util.Map;
 
 /**
@@ -118,5 +117,6 @@ public class MasSmsService extends AbstractSmsService {
     private void saveLog(String content, int status, String reportContent) {
 
         // 保存日志到数据库
+        sendSmsInfoService.save();
     }
 }

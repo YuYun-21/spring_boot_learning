@@ -1,8 +1,7 @@
 package com.yuyun.sms;
 
 import cn.hutool.extra.spring.SpringUtil;
-import com.wzkj.common.constant.Constant;
-import com.wzkj.modules.sys.service.SysParamsService;
+import com.yuyun.sms.service.SysParamsService;
 import org.springframework.stereotype.Component;
 
 /**
@@ -22,7 +21,7 @@ public class SmsFactory {
 
     public static AbstractSmsService build() {
         //获取配置信息
-        MasMsgConfig config = sysParamsService.getValueObject(Constant.SMS_MAS_CONFIG_KEY, MasMsgConfig.class);
+        MasMsgConfig config = sysParamsService.getValueObject("SMS_MAS_CONFIG_KEY", MasMsgConfig.class);
         return new MasSmsService(config);
     }
 }
