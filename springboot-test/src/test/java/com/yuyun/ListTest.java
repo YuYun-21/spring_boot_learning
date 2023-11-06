@@ -3,8 +3,7 @@ package com.yuyun;
 import com.yuyun.dto.People;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author hyh
@@ -74,4 +73,47 @@ public class ListTest {
         // 打印替换后的结果
         System.out.println("peopleList = " + peopleList);
     }
+
+    @Test
+    void RemoveDuplicateValues1() {
+        List<Integer> list = new ArrayList<>(Arrays.asList(1, 9, 3, 2, 1, 3, 7, 2, 1));
+        System.out.println("原集合:" + list);
+        // 新集合
+        List<Integer> newList = new ArrayList<>(list.size());
+        list.forEach(i -> {
+            // 如果新集合中不存在则插入
+            if (!newList.contains(i)) {
+                newList.add(i);
+            }
+        });
+        System.out.println("去重后:" + newList);
+    }
+
+    @Test
+    void RemoveDuplicateValues() {
+        List<Integer> list = new ArrayList<>(Arrays.asList(1, 9, 3, 2, 1, 3, 7, 2, 1));
+        System.out.println("原集合:" + list);
+
+        //Iterator<Integer> iterator = list.iterator();
+        //while (iterator.hasNext()) {
+        //    // 获取循环的值
+        //    Integer item = iterator.next();
+        //    // 如果存在两个相同的值
+        //    if (list.indexOf(item) != list.lastIndexOf(item)) {
+        //        // 移除最后那个相同的值
+        //        iterator.remove();
+        //    }
+        //}
+        //System.out.println("去重后:" + list);
+
+        //HashSet<Integer> set = new HashSet<>(list);
+        //System.out.println("去重后:" + set);
+
+        //LinkedHashSet<Integer> set = new LinkedHashSet<>(list);
+        //System.out.println("去重后:" + set);
+
+        TreeSet<Integer> set = new TreeSet<>(list);
+        System.out.println("去重集合:" + set);
+    }
+
 }
