@@ -38,7 +38,7 @@ public class AddressListTest {
         Workbook workbook = ExcelExportUtils.exportExcel(params, PeopleEntity.class, list);
 
         System.out.println(new Date().getTime() - start.getTime());
-        FileOutputStream fos = new FileOutputStream("/Users/yuyun/Downloads/AddressListTest.testOne.xlsx");
+        FileOutputStream fos = new FileOutputStream("/Users/yuyun/Downloads/AddressListTest.dropDownTest.xlsx");
         workbook.write(fos);
         fos.close();
     }
@@ -61,7 +61,7 @@ public class AddressListTest {
         params.setDictHandler(new ExcelDiceAddressListHandlerImpl());
         Workbook workbook = ExcelExportUtils.exportExcel(params, PeopleEntity.class, list);
         System.out.println(new Date().getTime() - start.getTime());
-        FileOutputStream fos = new FileOutputStream("/Users/yuyun/Downloads/AddressListTest.testOneXls.xls");
+        FileOutputStream fos = new FileOutputStream("/Users/yuyun/Downloads/AddressListTest.dropDownXlsTest.xls");
         workbook.write(fos);
         fos.close();
     }
@@ -84,7 +84,7 @@ public class AddressListTest {
         Workbook workbook = ExcelExportUtils.exportExcelImpl(params, PeopleEntity.class, list);
 
         System.out.println(new Date().getTime() - start.getTime());
-        FileOutputStream fos = new FileOutputStream("/Users/yuyun/Downloads/AddressListTest.testOne.xlsx");
+        FileOutputStream fos = new FileOutputStream("/Users/yuyun/Downloads/AddressListTest.dropDownImplTest.xlsx");
         workbook.write(fos);
         fos.close();
     }

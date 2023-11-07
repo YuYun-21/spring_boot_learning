@@ -10,12 +10,12 @@ import lombok.Data;
  */
 @Data
 public class PeopleEntity {
-    @Excel(name = "名字")
+    @Excel(name = "名字", width = 20)
     private String name;
-    @Excel(name = "年龄")
+    @Excel(name = "年龄", width = 20)
     private Integer age;
-    @Excel(name = "角色", dict = "level", addressList = true)
+    @Excel(name = "角色", width = 20, dict = "level", addressList = true)
     private Integer rule;
-    @Excel(name = "状态", replace = {"注销_0", "正常_1", "禁用_2"}, addressList = true)
+    @Excel(name = "状态", width = 20, replace = {"注销_0", "正常_1", "禁用_2"}, addressList = true)
     private String status;
 }

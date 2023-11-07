@@ -101,7 +101,9 @@ public class ExcelExportServiceImpl extends ExcelExportService{
 
                 // 只能选择下拉框中的值
                 validation.setSuppressDropDownArrow(true);
+                // 设置输入错误提示信息
                 validation.setShowErrorBox(true);
+                validation.createErrorBox("错误提示", "只能下拉选择合适的值");
 
                 sheet.addValidationData(validation);
             }
