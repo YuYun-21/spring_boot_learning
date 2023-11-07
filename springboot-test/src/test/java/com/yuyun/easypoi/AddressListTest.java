@@ -3,7 +3,7 @@ package com.yuyun.easypoi;
 import cn.afterturn.easypoi.excel.entity.ExportParams;
 import cn.afterturn.easypoi.excel.entity.enmus.ExcelType;
 import com.yuyun.easypoi.entity.PeopleEntity;
-import com.yuyun.easypoi.handler.ExcelDicePeopleHandlerImpl;
+import com.yuyun.easypoi.handler.ExcelDiceAddressListHandlerImpl;
 import com.yuyun.easypoi.handler.ExcelExportUtils;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.junit.jupiter.api.Test;
@@ -21,7 +21,7 @@ import java.util.List;
 public class AddressListTest {
 
     @Test
-    public void testOne() throws Exception {
+    public void dropDownTest() throws Exception {
 
         List<PeopleEntity> list = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
@@ -34,7 +34,7 @@ public class AddressListTest {
         }
         Date start = new Date();
         ExportParams params = new ExportParams("下拉测试", "测试", ExcelType.XSSF);
-        params.setDictHandler(new ExcelDicePeopleHandlerImpl());
+        params.setDictHandler(new ExcelDiceAddressListHandlerImpl());
         Workbook workbook = ExcelExportUtils.exportExcel(params, PeopleEntity.class, list);
 
         System.out.println(new Date().getTime() - start.getTime());
@@ -45,7 +45,7 @@ public class AddressListTest {
 
 
     @Test
-    public void testOneXls() throws Exception {
+    public void dropDownXlsTest() throws Exception {
 
         List<PeopleEntity> list = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
@@ -58,10 +58,33 @@ public class AddressListTest {
         }
         Date start = new Date();
         ExportParams params = new ExportParams("下拉测试", "测试", ExcelType.HSSF);
-        params.setDictHandler(new ExcelDicePeopleHandlerImpl());
+        params.setDictHandler(new ExcelDiceAddressListHandlerImpl());
         Workbook workbook = ExcelExportUtils.exportExcel(params, PeopleEntity.class, list);
         System.out.println(new Date().getTime() - start.getTime());
         FileOutputStream fos = new FileOutputStream("/Users/yuyun/Downloads/AddressListTest.testOneXls.xls");
+        workbook.write(fos);
+        fos.close();
+    }
+
+    @Test
+    public void dropDownImplTest() throws Exception {
+
+        List<PeopleEntity> list = new ArrayList<>();
+        for (int i = 0; i < 100; i++) {
+            PeopleEntity client = new PeopleEntity();
+            client.setName("小明" + i);
+            client.setAge(18 + i);
+            client.setStatus(i % 3 + "");
+            client.setRule(i % 3);
+            list.add(client);
+        }
+        Date start = new Date();
+        ExportParams params = new ExportParams("下拉测试", "测试", ExcelType.XSSF);
+        params.setDictHandler(new ExcelDiceAddressListHandlerImpl());
+        Workbook workbook = ExcelExportUtils.exportExcelImpl(params, PeopleEntity.class, list);
+
+        System.out.println(new Date().getTime() - start.getTime());
+        FileOutputStream fos = new FileOutputStream("/Users/yuyun/Downloads/AddressListTest.testOne.xlsx");
         workbook.write(fos);
         fos.close();
     }

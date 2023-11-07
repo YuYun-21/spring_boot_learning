@@ -21,6 +21,13 @@ public class ExcelExportUtils {
         return workbook;
     }
 
+    public static Workbook exportExcelImpl(ExportParams entity, Class<?> pojoClass,
+                                       Collection<?> dataSet) {
+        Workbook workbook = getWorkbook(entity.getType(), dataSet.size());
+        new ExcelExportServiceImpl().createSheet(workbook, entity, pojoClass, dataSet);
+        return workbook;
+    }
+
     private static Workbook getWorkbook(ExcelType type, int size) {
         if (ExcelType.HSSF.equals(type)) {
             return new HSSFWorkbook();

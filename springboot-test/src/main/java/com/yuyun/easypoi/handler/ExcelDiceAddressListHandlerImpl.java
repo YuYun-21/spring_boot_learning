@@ -13,7 +13,7 @@ import java.util.Map;
  *
  * @author jueyue on 20-4-26.
  */
-public class ExcelDicePeopleHandlerImpl implements IExcelDictHandler {
+public class ExcelDiceAddressListHandlerImpl implements IExcelDictHandler {
 
     /**
      * 返回字典所有值
