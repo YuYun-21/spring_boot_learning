@@ -1,13 +1,21 @@
 package com.yuyun.easypoi;
 
+import cn.afterturn.easypoi.excel.ExcelImportUtil;
 import cn.afterturn.easypoi.excel.entity.ExportParams;
+import cn.afterturn.easypoi.excel.entity.ImportParams;
 import cn.afterturn.easypoi.excel.entity.enmus.ExcelType;
+import cn.afterturn.easypoi.excel.entity.result.ExcelImportResult;
+import com.alibaba.fastjson.JSON;
 import com.yuyun.easypoi.entity.PeopleEntity;
+import com.yuyun.easypoi.entity.PeopleImportEntity;
+import com.yuyun.easypoi.entity.ViliGroupOne;
 import com.yuyun.easypoi.handler.ExcelDiceAddressListHandlerImpl;
 import com.yuyun.easypoi.handler.ExcelExportUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.junit.jupiter.api.Test;
 
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Date;
@@ -18,6 +26,7 @@ import java.util.List;
  *
  * @author jueyue on 20-4-26.
  */
+@Slf4j
 public class AddressListTest {
 
     @Test
@@ -87,5 +96,45 @@ public class AddressListTest {
         FileOutputStream fos = new FileOutputStream("/Users/yuyun/Downloads/AddressListTest.dropDownImplTest.xlsx");
         workbook.write(fos);
         fos.close();
+    }
+
+    @Test
+    public void importExcelTest() {
+
+        List<PeopleImportEntity> failList = new ArrayList<>();
+
+        try {
+            ImportParams params = new ImportParams();
+            params.setNeedVerify(true);
+            // 表格标题行数,默认0
+            params.setTitleRows(1);
+            // 数据校验，只校验分组为ViliGroupOne的
+            // 比如 @Size(max = 3, message = "长度不能超过3", groups = {ViliGroupOne.class})
+            params.setVerifyGroup(new Class[]{ViliGroupOne.class});
+            params.setDictHandler(new ExcelDiceAddressListHandlerImpl());
+
+            ExcelImportResult<PeopleImportEntity> result = ExcelImportUtil.importExcelMore(
+                    new FileInputStream("/Users/wizdom-lcr/Downloads/AddressListTest.dropDownTest.xlsx"),
+                    PeopleImportEntity.class,
+                    params
+            );
+
+            //失败的数据
+            System.out.println("result.getFailList() = " + JSON.toJSONString(result.getFailList()));
+            if (result.getFailList().size() > 0) {
+                StringBuilder sb = new StringBuilder();
+                for (PeopleImportEntity user : result.getFailList()) {
+                    sb.append(String.format("第%d行：%s；", user.getRowNum(), user.getErrorMsg()));
+                    failList.add(user);
+                }
+                log.error(sb.toString());
+            }
+
+            System.out.println("failList = " + JSON.toJSONString(failList));
+            System.out.println("result.getFailList() = " + JSON.toJSONString(result.getFailList()));
+            System.out.println("result.getList() = " + JSON.toJSONString(result.getList()));
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
     }
 }

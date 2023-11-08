@@ -34,7 +34,7 @@ public class ExcelDiceAddressListHandlerImpl implements IExcelDictHandler {
         dictMap.put("dictValue", "老师");
         list.add(dictMap);
         dictMap = new HashMap<>(2);
-        dictMap.put("dictKey", "1");
+        dictMap.put("dictKey", "2");
         dictMap.put("dictValue", "学生");
         list.add(dictMap);
         return list;
@@ -59,14 +59,13 @@ public class ExcelDiceAddressListHandlerImpl implements IExcelDictHandler {
     @Override
     public String toValue(String dict, Object obj, String name, Object value) {
         if ("level".equals(dict)) {
-            int level = Integer.parseInt(value.toString());
-            switch (level) {
-                case 1:
-                    return "老师";
-                case 0:
-                    return "校长";
-                case 2:
-                    return "学生";
+            switch (value.toString()) {
+                case "校长":
+                    return "0";
+                case "老师":
+                    return "1";
+                case "学生":
+                    return "2";
             }
         }
         return null;
