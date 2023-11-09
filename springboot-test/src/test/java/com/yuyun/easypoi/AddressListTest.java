@@ -9,6 +9,7 @@ import com.alibaba.fastjson.JSON;
 import com.yuyun.easypoi.entity.PeopleEntity;
 import com.yuyun.easypoi.entity.PeopleImportEntity;
 import com.yuyun.easypoi.entity.ViliGroupOne;
+import com.yuyun.easypoi.handler.ExcelDicDeptAddressListHandlerImpl;
 import com.yuyun.easypoi.handler.ExcelDiceAddressListHandlerImpl;
 import com.yuyun.easypoi.handler.ExcelExportUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -47,11 +48,26 @@ public class AddressListTest {
         Workbook workbook = ExcelExportUtils.exportExcel(params, PeopleEntity.class, list);
 
         System.out.println(new Date().getTime() - start.getTime());
-        FileOutputStream fos = new FileOutputStream("/Users/yuyun/Downloads/AddressListTest.dropDownTest.xlsx");
+        FileOutputStream fos = new FileOutputStream("/Users/wizdom-lcr/Downloads/AddressListTest.dropDownTest.xlsx");
         workbook.write(fos);
         fos.close();
     }
 
+    @Test
+    public void dropDownEmptyTest() throws Exception {
+
+        List<PeopleEntity> list = new ArrayList<>();
+
+        Date start = new Date();
+        ExportParams params = new ExportParams("下拉测试", "空值测试", ExcelType.XSSF);
+        params.setDictHandler(new ExcelDiceAddressListHandlerImpl());
+        Workbook workbook = ExcelExportUtils.exportExcel(params, PeopleEntity.class, list);
+
+        System.out.println(new Date().getTime() - start.getTime());
+        FileOutputStream fos = new FileOutputStream("/Users/wizdom-lcr/Downloads/AddressListTest.dropDownTest.xlsx");
+        workbook.write(fos);
+        fos.close();
+    }
 
     @Test
     public void dropDownXlsTest() throws Exception {
@@ -98,6 +114,9 @@ public class AddressListTest {
         fos.close();
     }
 
+    /**
+     * 导入测试
+     */
     @Test
     public void importExcelTest() {
 
@@ -114,7 +133,7 @@ public class AddressListTest {
             params.setDictHandler(new ExcelDiceAddressListHandlerImpl());
 
             ExcelImportResult<PeopleImportEntity> result = ExcelImportUtil.importExcelMore(
-                    new FileInputStream("/Users/wizdom-lcr/Downloads/AddressListTest.dropDownTest.xlsx"),
+                    new FileInputStream("/Users/wizdom-lcr/Downloads/AddressListTest.dropDownDeptEmptyTest.xlsx"),
                     PeopleImportEntity.class,
                     params
             );
@@ -136,5 +155,21 @@ public class AddressListTest {
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         }
+    }
+
+    @Test
+    public void dropDownDeptEmptyTest() throws Exception {
+
+        List<PeopleEntity> list = new ArrayList<>();
+
+        Date start = new Date();
+        ExportParams params = new ExportParams("下拉测试", "空值测试", ExcelType.XSSF);
+        params.setDictHandler(new ExcelDicDeptAddressListHandlerImpl());
+        Workbook workbook = ExcelExportUtils.exportExcel(params, PeopleEntity.class, list);
+
+        System.out.println(new Date().getTime() - start.getTime());
+        FileOutputStream fos = new FileOutputStream("/Users/wizdom-lcr/Downloads/AddressListTest.dropDownDeptEmptyTest.xlsx");
+        workbook.write(fos);
+        fos.close();
     }
 }

@@ -3,10 +3,7 @@ package com.yuyun.easypoi.handler;
 
 import cn.afterturn.easypoi.handler.inter.IExcelDictHandler;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 模拟使用,生产请用真实字典
@@ -58,7 +55,7 @@ public class ExcelDiceAddressListHandlerImpl implements IExcelDictHandler {
 
     @Override
     public String toValue(String dict, Object obj, String name, Object value) {
-        if ("level".equals(dict)) {
+        if ("level".equals(dict) && Objects.nonNull(value)) {
             switch (value.toString()) {
                 case "校长":
                     return "0";
