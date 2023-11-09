@@ -118,17 +118,21 @@ public class ExcelExportServiceImpl extends ExcelExportService{
 
     private String[] getAddressListValues(ExcelExportEntity entity) {
         if (StringUtils.isNotEmpty(entity.getDict())) {
-            String[] arr = new String[this.dictHandler.getList(entity.getDict()).size()];
+            List<Map> list = this.dictHandler.getList(entity.getDict());
+            String[] arr = new String[list.size()];
             for (int i = 0; i < arr.length; i++) {
-                arr[i] = this.dictHandler.getList(entity.getDict()).get(i).get("dictValue").toString();
+                arr[i] = list.get(i).get("dictValue").toString();
             }
             return arr;
-        } else if (entity.getReplace() != null && entity.getReplace().length > 0) {
-            String[] arr = new String[entity.getReplace().length];
-            for (int i = 0; i < arr.length; i++) {
-                arr[i] = entity.getReplace()[i].split("_")[0];
+        } else {
+            String[] replace = entity.getReplace();
+            if (replace != null && replace.length > 0) {
+                String[] arr = new String[replace.length];
+                for (int i = 0; i < arr.length; i++) {
+                    arr[i] = replace[i].split("_")[0];
+                }
+                return arr;
             }
-            return arr;
         }
         throw new ExcelExportException(entity.getName() + "没有可以创建下来的数据,请addressList不要设置为true");
     }
