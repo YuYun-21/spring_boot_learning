@@ -10,6 +10,7 @@ import com.yuyun.easypoi.entity.PeopleEntity;
 import com.yuyun.easypoi.entity.PeopleImportEntity;
 import com.yuyun.easypoi.entity.ViliGroupOne;
 import com.yuyun.easypoi.handler.ExcelDicDeptAddressListHandlerImpl;
+import com.yuyun.easypoi.handler.ExcelDicMapHandlerImpl;
 import com.yuyun.easypoi.handler.ExcelDiceAddressListHandlerImpl;
 import com.yuyun.easypoi.handler.ExcelExportUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -48,7 +49,7 @@ public class AddressListTest {
         Workbook workbook = ExcelExportUtils.exportExcel(params, PeopleEntity.class, list);
 
         System.out.println(new Date().getTime() - start.getTime());
-        FileOutputStream fos = new FileOutputStream("/Users/wizdom-lcr/Downloads/AddressListTest.dropDownTest.xlsx");
+        FileOutputStream fos = new FileOutputStream("/Users/yuyun/Downloads/AddressListTest.dropDownTest.xlsx");
         workbook.write(fos);
         fos.close();
     }
@@ -64,7 +65,7 @@ public class AddressListTest {
         Workbook workbook = ExcelExportUtils.exportExcel(params, PeopleEntity.class, list);
 
         System.out.println(new Date().getTime() - start.getTime());
-        FileOutputStream fos = new FileOutputStream("/Users/wizdom-lcr/Downloads/AddressListTest.dropDownTest.xlsx");
+        FileOutputStream fos = new FileOutputStream("/Users/yuyun/Downloads/AddressListTest.dropDownTest.xlsx");
         workbook.write(fos);
         fos.close();
     }
@@ -133,7 +134,7 @@ public class AddressListTest {
             params.setDictHandler(new ExcelDiceAddressListHandlerImpl());
 
             ExcelImportResult<PeopleImportEntity> result = ExcelImportUtil.importExcelMore(
-                    new FileInputStream("/Users/wizdom-lcr/Downloads/AddressListTest.dropDownDeptEmptyTest.xlsx"),
+                    new FileInputStream("/Users/yuyun/Downloads/AddressListTest.dropDownDeptEmptyTest.xlsx"),
                     PeopleImportEntity.class,
                     params
             );
@@ -168,7 +169,55 @@ public class AddressListTest {
         Workbook workbook = ExcelExportUtils.exportExcel(params, PeopleEntity.class, list);
 
         System.out.println(new Date().getTime() - start.getTime());
-        FileOutputStream fos = new FileOutputStream("/Users/wizdom-lcr/Downloads/AddressListTest.dropDownDeptEmptyTest.xlsx");
+        FileOutputStream fos = new FileOutputStream("/Users/yuyun/Downloads/AddressListTest.dropDownDeptEmptyTest.xlsx");
+        workbook.write(fos);
+        fos.close();
+    }
+
+    @Test
+    public void dropDownDeptTest() throws Exception {
+
+        List<PeopleEntity> list = new ArrayList<>();
+        for (int i = 0; i < 100; i++) {
+            PeopleEntity client = new PeopleEntity();
+            client.setName("小明" + i);
+            client.setAge(18 + i);
+            client.setStatus(i % 3 + "");
+            client.setRule(i % 3);
+            client.setDept("002");
+            list.add(client);
+        }
+        Date start = new Date();
+        ExportParams params = new ExportParams("下拉测试", "空值测试", ExcelType.XSSF);
+        params.setDictHandler(new ExcelDicDeptAddressListHandlerImpl());
+        Workbook workbook = ExcelExportUtils.exportExcelImpl(params, PeopleEntity.class, list);
+
+        System.out.println(new Date().getTime() - start.getTime());
+        FileOutputStream fos = new FileOutputStream("/Users/yuyun/Downloads/AddressListTest.dropDownDeptEmptyTest.xlsx");
+        workbook.write(fos);
+        fos.close();
+    }
+
+    @Test
+    public void dropDownDeptHandleTest() throws Exception {
+
+        List<PeopleEntity> list = new ArrayList<>();
+        for (int i = 0; i < 100; i++) {
+            PeopleEntity client = new PeopleEntity();
+            client.setName("小明" + i);
+            client.setAge(18 + i);
+            client.setStatus(i % 3 + "");
+            client.setRule(i % 3);
+            client.setDept("002");
+            list.add(client);
+        }
+        Date start = new Date();
+        ExportParams params = new ExportParams("下拉测试", "空值测试", ExcelType.XSSF);
+        params.setDictHandler(new ExcelDicMapHandlerImpl());
+        Workbook workbook = ExcelExportUtils.exportExcelImpl(params, PeopleEntity.class, list);
+
+        System.out.println(new Date().getTime() - start.getTime());
+        FileOutputStream fos = new FileOutputStream("/Users/yuyun/Downloads/AddressListTest.dropDownDeptHandleTest.xlsx");
         workbook.write(fos);
         fos.close();
     }
