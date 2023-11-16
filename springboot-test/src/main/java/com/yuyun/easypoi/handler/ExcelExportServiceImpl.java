@@ -21,7 +21,7 @@ import java.util.*;
  * @author hyh
  * @since 2023-11-07
  */
-public class ExcelExportServiceImpl extends ExcelExportService{
+public class ExcelExportServiceImpl extends ExcelExportService {
 
     private static int MAX_NUM = 60000;
 
@@ -37,7 +37,7 @@ public class ExcelExportServiceImpl extends ExcelExportService{
             // 创建表格样式
             setExcelExportStyler((IExcelExportStyler) entity.getStyle()
                     .getConstructor(Workbook.class).newInstance(workbook));
-            Drawing patriarch   = PoiExcelGraphDataUtil.getDrawingPatriarch(sheet);
+            Drawing patriarch = PoiExcelGraphDataUtil.getDrawingPatriarch(sheet);
             List<ExcelExportEntity> excelParams = new ArrayList<ExcelExportEntity>();
             if (entity.isAddIndex()) {
                 excelParams.add(indexExcelEntity(entity));
@@ -52,7 +52,7 @@ public class ExcelExportServiceImpl extends ExcelExportService{
             short rowHeight = entity.getHeight() != 0 ? entity.getHeight() : getRowHeight(excelParams);
             setCurrentIndex(1);
             createAddressList(sheet, index, excelParams, 0);
-            Iterator<?> its      = dataSet.iterator();
+            Iterator<?> its = dataSet.iterator();
             List<Object> tempList = new ArrayList<Object>();
             while (its.hasNext()) {
                 Object t = its.next();
@@ -116,6 +116,14 @@ public class ExcelExportServiceImpl extends ExcelExportService{
         return cellIndex;
     }
 
+    /**
+     * 继承ExcelExportService主要是为了重写这个方法
+     * 原方法会多次调用dictHandler里面的getList()方法。如果字典是从数据库中实时取出的，浪费数据库资源
+     * 重写之后，导出Excel每个dic只会调用一次getList()方法
+     *
+     * @param entity
+     * @return
+     */
     private String[] getAddressListValues(ExcelExportEntity entity) {
         if (StringUtils.isNotEmpty(entity.getDict())) {
             List<Map> list = this.dictHandler.getList(entity.getDict());
