@@ -4,6 +4,7 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HtmlUtil;
 import org.junit.jupiter.api.Test;
 
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -52,6 +53,27 @@ public class HuToolTest {
         System.out.println("replace = " + replace);
         String unescapeReplace = HtmlUtil.unescape(replace);
         System.out.println("unescapeReplace = " + unescapeReplace);
+
+        Pattern compile1 = Pattern.compile("</font>.*(?=</font></span>)");
+        String replace1 = StrUtil.replace(html, compile1, matcher -> HtmlUtil.unwrapHtmlTag(matcher.group(), "font"));
+        System.out.println("replace1 = " + replace1);
+
+        // 包含多个 span 标签的输入字符串
+        String input = "<div data-v-4f8cd50c=\"\" class=\"c_left\"><p style=\"margin:0pt;margin-bottom:.0001pt;text-align:justify;text-justify:inter-ideograph;font-family:Calibri;font-size:10.5000pt;text-autospace:ideograph-numeric;line-height:30.0000pt;\">&nbsp;</p><p style=\"margin:0pt;margin-bottom:.0001pt;text-align:justify;text-justify:inter-ideograph;font-family:Calibri;font-size:10.5000pt;text-autospace:ideograph-numeric;line-height:30.0000pt;\">&nbsp;</p><p style=\"margin:0pt;margin-bottom:.0001pt;text-align:justify;text-justify:inter-ideograph;font-family:Calibri;font-size:10.5000pt;text-autospace:ideograph-numeric;text-align:center;line-height:30.0000pt;\" align=\"center\"><span style=\"font-family:方正小标宋_GBK;font-size:22.0000pt;\">云南省人民政府研究室党组</span><span style=\"font-family:方正小标宋_GBK;font-size:22.0000pt;\">理论学习中心组</span></p><p style=\"margin:0pt;margin-bottom:.0001pt;text-align:justify;text-justify:inter-ideograph;font-family:Calibri;font-size:10.5000pt;text-autospace:ideograph-numeric;text-align:center;line-height:30.0000pt;\" align=\"center\"><span style=\"font-family:方正小标宋_GBK;font-size:22.0000pt;\">组织开展</span><span style=\"font-family:方正小标宋_GBK;font-size:22.0000pt;\">2022年第8次学习</span></p><p style=\"margin:0pt;margin-bottom:.0001pt;text-align:justify;text-justify:inter-ideograph;font-family:Calibri;font-size:10.5000pt;text-autospace:ideograph-numeric;line-height:30.0000pt;\">&nbsp;</p><p style=\"margin:0pt;margin-bottom:.0001pt;text-align:justify;text-justify:inter-ideograph;font-family:Calibri;font-size:10.5000pt;text-indent:32.0000pt;text-autospace:ideograph-numeric;line-height:30.0000pt;\"><span style=\"font-family:方正仿宋_GBK;font-size:16.0000pt;\">8月26日，云南省人民政府研究室党组理论学习中心组组织开展第8次集中学习，</span><span style=\"font-family:方正仿宋_GBK;font-size:16.0000pt;\">学习习近平</span><span style=\"font-family:方正仿宋_GBK;font-size:16.0000pt;\">生态文明思想和省委、省政府</span><span style=\"font-family:方正仿宋_GBK;font-size:16.0000pt;\">绿美云南建设</span><span style=\"font-family:方正仿宋_GBK;font-size:16.0000pt;\">决策部署</span><span style=\"font-family:方正仿宋_GBK;font-size:16.0000pt;\">，全室党员干部参加集中学习。集中学习研讨会上，收听收看省委理论学习中心组2022年第五次集中学习录音和PPT。</span></p><p style=\"margin:0pt;margin-bottom:.0001pt;text-align:justify;text-justify:inter-ideograph;font-family:Calibri;font-size:10.5000pt;text-indent:32.0000pt;text-autospace:ideograph-numeric;line-height:30.0000pt;\"><span style=\"font-family:方正仿宋_GBK;font-size:16.0000pt;\">会议指出，习近平生态文明思想，深刻回答了为什么建设生态文明、建设什么样的生态文明、怎样建设生态文明等重大理论和实践问题，深刻阐释了人与自然的关系、环境与民生的关系、发展与保护的关系、自然生态各要素之间的关系、国内与国际的关系，</span><span style=\"font-family:方正仿宋_GBK;font-size:16.0000pt;\">是习近平新时代中国特色社会主义思想的重要组成部分</span><span style=\"font-family:方正仿宋_GBK;font-size:16.0000pt;\">。</span></p><p style=\"margin:0pt;margin-bottom:.0001pt;text-align:justify;text-justify:inter-ideograph;font-family:Calibri;font-size:10.5000pt;text-indent:32.0000pt;text-autospace:ideograph-numeric;line-height:30.0000pt;\"><span style=\"font-family:方正仿宋_GBK;font-size:16.0000pt;\">会议强调，学深悟透习近平生态文明思想是做好以文辅政工作的基础和前提，要牢固树立全局观念、系统思维，在学深悟透习近平生态文明思想核心要义的基础上，深刻认识和理解保护生态环境是关系党的使命宗旨的重大政治问题和关系民生的重大社会问题，深刻认识和理解保护生态环境与经济社会发展之间辩证统一关系，跳出生态文明看生态文明，把推进生态文明建设放在自然规律、人类文明发展和经济社会发展的大背景下理解和把握，</span><span style=\"font-family:方正仿宋_GBK;font-size:16.0000pt;\">为云南主动融入和服务国家战略、参与全球生态文明建设多出好点子、金点子</span><span style=\"font-family:方正仿宋_GBK;font-size:16.0000pt;\">。</span></p><p style=\"margin:0pt;margin-bottom:.0001pt;text-align:justify;text-justify:inter-ideograph;font-family:Calibri;font-size:10.5000pt;text-indent:32.0000pt;text-autospace:ideograph-numeric;line-height:30.0000pt;\"><span style=\"font-family:方正仿宋_GBK;font-size:16.0000pt;\">会议强调，开展绿美云南建设，是省委、省政府团结带领全省干部群众，深入学习贯彻落实习近平生态文明思想和习近平总书记考察云南重要讲话精神，紧扣生态文明建设排头兵战略定位，深化创新实践途径的重大举措和重要抓手。省政府研究室要主动担当以文辅政职责使命，聚焦绿美城市建设、以人为核心的新型城镇化等方面加强调查研究，以改革的思维和创新的举措，回答好问题是什么、差距在哪里、目标怎么定、措施有哪些等问题，为推进绿美云南建设作出积极贡献。</span></p><p style=\"margin:0pt;margin-bottom:.0001pt;text-align:justify;text-justify:inter-ideograph;font-family:Calibri;font-size:10.5000pt;text-indent:32.0000pt;text-autospace:ideograph-numeric;line-height:30.0000pt;\"><br></p><p style=\"margin: 0pt 0pt 0.0001pt; text-align: justify; font-size: 10.5pt; text-indent: 32pt; line-height: 30pt;\"><span style=\"font-family: Calibri;\">                                            </span><span style=\"font-family: 仿宋, 仿宋_GB2312;\"><span style=\"font-size: 16pt;\"> </span><span style=\"font-size: 16pt;\">供稿：机关党委（人事处）&nbsp;</span></span></p><p style=\"margin:0pt;margin-bottom:.0001pt;text-align:justify;text-justify:inter-ideograph;font-family:Calibri;font-size:10.5000pt;text-autospace:ideograph-numeric;line-height:30.0000pt;\">&nbsp;</p></div>";
+        // 定义匹配所有 span 标签（除第一个）的正则表达式
+        Pattern spanPattern = Pattern.compile("</span><span.*?(?=</span>)");
+
+        // 创建匹配器
+        Matcher matcher = spanPattern.matcher(input);
+
+        // 移除除第一个 span 标签外的所有其他 span 标签及其内容
+        String result = matcher.replaceAll("222");
+
+        // 输出更新后的字符串
+        System.out.println("result = " + result);
+
+        String replace2 = StrUtil.replace(input, spanPattern, matcher1 -> HtmlUtil.unwrapHtmlTag(matcher1.group(), "span"));
+        System.out.println("replace2 = " + replace2);
     }
 
 }
