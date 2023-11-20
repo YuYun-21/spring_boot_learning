@@ -1,18 +1,13 @@
 package com.yuyun.easypoi.entity;
 
-import com.alibaba.fastjson.JSON;
-import org.apache.commons.lang3.StringUtils;
-
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 /**
  * @author hyh
  * @since 2023-11-17
  */
-public class Main {
+public class MapMain {
 public static void main(String[] args) {
 
     long start = System.currentTimeMillis();
