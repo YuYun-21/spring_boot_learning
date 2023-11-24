@@ -3,6 +3,7 @@ package com.yuyun;
 import cn.hutool.core.util.ReUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HtmlUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Test;
 
 import java.util.regex.Matcher;
@@ -15,6 +16,76 @@ import java.util.regex.Pattern;
  * @since 2023-11-15
  */
 public class HuToolTest {
+
+    @Test
+    void test5(){
+        String html = "<p style=\"margin-top:5.0000pt\">&nbsp;</p><p style=\"margin-right:0.0000pt;\"align=\"center\"><span style=\"font-family:方正仿宋_GBK;\">&nbsp;&nbsp;&nbsp;云南省人民政府研究室</span></p><p style=\"margin-top:5.0000pt;\"align=\"justify\"><span style=\"font-family:'Times New Roman';\">2023年3月29日</span></p><p style=\"margin: 0pt; \"align=\"justify\"><span style=\"font-size: 21.3333px;\">附件：<img border=\"0\"src=\"/edittest/ewebeditor/sysimage/icon16/xls.gif\"><a href=\"/edittest/ewebeditor/uploadfile/20230330101140745.xls\"target=\"_blank\">人员名单.xls</a></span></p><p style=\"margin:0pt;\">&nbsp;</p>";
+        //String regex = "(?<=云南省人民政府研究室).*?(<p.*?></p>){0,1}<p.*?>(.*?\\d{4}年\\d{1,2}月\\d{1,2}日.*?)</p>";
+        String regex = ".*云南省人民政府研究室(?:&nbsp;|&ensp;|\\s)*\\d{4}年\\d{1,2}月\\d{1,2}日.*";
+
+        String s = HtmlUtil.cleanHtmlTag(html);
+        System.out.println("HtmlUtil.cleanHtmlTag(html) = " + s);
+        Pattern pattern = Pattern.compile(regex);
+        String input = "&nbsp;&nbsp;云南省人民政府研究室2023年考试录用公务员资格复审公告&nbsp;按照《云南省2023年度考试录用公务员公告》，现将云南省人民政府研究室2023年考试录用公务员资格复审工作公告如下：一、资格复审的对象云岭先锋“考录专题网页”进入省政府研究室招录岗位首轮资格复审的人员。因有进入首轮资格复审环节考生放弃，根据公务员考试录用有关规定，以进入该环节人员须具备的条件，按笔试成绩由高到低顺序，从报考同职位的考生中递补资格复审人员1名。后续若因自愿放弃或资格复审不合格等出现需递补的情况，递补人员名单、复审时间及地点将另行通知。递补后参加首轮资格复审人员名单见附件。二、资格复审时间2023年4月3日（星期一）9：00至12：00。三、资格复审地点云南省昆明市五华区华山南路74号省政府研究室宿舍旁。四、资格复审所需材料（一）笔试准考证（2份）；（二）本人有效期内的身份证原件及复印件（2份）；（三）所在学校或者单位盖章的报名推荐表、报名登记表原件及复印件；（四）学历学位证书原件及复印件，学历学位网上认证报告；（五）两年以上基层工作经历证明；（六）其他相关证明材料。五、资格复审注意事项（一）考生本人在规定的时间内按要求携带相关证件及材料到指定地点进行现场资格审核。经资格审核合格的考生方可参加面试。报名时填写的信息与报考人员所持证明材料不一致，或者提供虚假证明材料，取消面试资格，由此带来的后果由考生本人承担。不能按要求提供证明材料的考生，视为资格复审不合格。未按时参加资格复审的考生，视为自愿放弃。（二）资格复审其他要求参考《云南省2023年度考试录用公务员公告》。（三）资格复审、面试、体检、考察等后续工作期间，将通过考生报名期间预留电话告知考生相关事宜，请考生务必保持通信工具畅通，如因无法联系造成的后果由考生自行承担。&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;云南省人民政府研究室&ensp;&ensp;&ensp;&ensp;&ensp; &ensp;&ensp;&ensp;2023年3月29日附件：进入首轮资格复审人员名单.xls";
+        Matcher matcher = pattern.matcher(input);
+        System.out.println("ReUtil.isMatch(regex,input) = " + ReUtil.isMatch(regex, input));
+
+        while (matcher.find()) {
+            System.out.println("Group 0: " + matcher.group(0)); // 整个匹配
+            System.out.println("Group 1: " + matcher.group(1)); // 第一个捕获组
+            System.out.println("Group 2: " + matcher.group(2)); // 第一个捕获组
+            System.out.println("Group 3: " + matcher.group(3)); // 第一个捕获组
+        }
+
+
+    }
+
+    @Test
+    void test31() {
+        String input = "机关党委机关党委人事处）";
+        String input1 = "机关党委机关党委（人事处）";
+        String input2 = "机关党委机关党委（人才办事处）";
+        String regex = "(?<!（[^）]{0,4})）(?![^（]*）)";
+        String replaceAll = input.replaceAll(regex, "");
+        System.out.println("replaceAll = " + replaceAll);
+        String replaceAll1 = input1.replaceAll(regex, "");
+        System.out.println("replaceAll = " + replaceAll1);
+        String replaceAll2 = input2.replaceAll(regex, "");
+        System.out.println("replaceAll2 = " + replaceAll2);
+
+        String replace = StrUtil.replace("", regex, matcher -> "");
+        System.out.println("replace = " + replace);
+
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(input1);
+
+        while (matcher.find()) {
+            System.out.println("Group 0: " + matcher.group(0)); // 整个匹配
+            System.out.println("Group 1: " + matcher.group(1)); // 第一个捕获组
+            System.out.println("Group 2: " + matcher.group(2)); // 第一个捕获组
+            System.out.println("Group 3: " + matcher.group(3)); // 第一个捕获组
+        }
+    }
+
+    @Test
+    void test11() {
+        String html = "<h1 style=\"text-align: center; margin: 0pt; text-indent: 44pt; padding: 0pt; line-height: 30pt;\"><span style=\"font-family:方正小标宋_GBK;font-weight:normal;font-size:22.0000pt;\">&nbsp;审议通过《中华人民共和国专利法实施细则（修正草案）》</span></h1><p style=\"margin-top:5.0000pt;margin-right:0.0000pt;margin-bottom:5.0000pt;margin-left:0.0000pt;text-align:left;font-family:Calibri;font-size:12.0000pt;margin-top:0.0000pt;margin-right:0.0000pt;margin-bottom:0.0000pt;margin-left:0.0000pt;text-indent:24.0000pt;padding:0pt 0pt 0pt 0pt ;text-autospace:ideograph-numeric;line-height:30.0000pt;\">&nbsp;</p><p style=\"margin-top:5.0000pt;margin-right:0.0000pt;margin-bottom:5.0000pt;margin-left:0.0000pt;text-align:left;font-family:Calibri;font-size:12.0000pt;margin-top:0.0000pt;margin-right:0.0000pt;margin-bottom:0.0000pt;margin-left:0.0000pt;text-indent:24.0000pt;padding:0pt 0pt 0pt 0pt ;text-autospace:ideograph-numeric;text-align:center;line-height:30.0000pt;\"align=\"center\"><span style=\"font-family:宋体;font-size:12.0000pt;\">来源：新华社</span></p><p style=\"margin:0pt;margin-bottom:.0001pt;text-align:justify;text-justify:inter-ideograph;font-family:Calibri;font-size:10.5000pt;text-indent:21.0000pt;padding:0pt 0pt 0pt 0pt ;text-autospace:ideograph-numeric;text-align:left;line-height:30.0000pt;\">&nbsp;</p><p style=\"margin-top:5.0000pt;margin-right:0.0000pt;margin-bottom:5.0000pt;margin-left:0.0000pt;text-align:left;font-family:Calibri;font-size:12.0000pt;margin-top:0.0000pt;margin-right:0.0000pt;margin-bottom:0.0000pt;margin-left:0.0000pt;text-indent:32.0000pt;padding:0pt 0pt 0pt 0pt ;text-autospace:ideograph-numeric;text-align:justify;text-justify:inter-ideograph;line-height:30.0000pt;\"align=\"justify\"><span style=\"font-family:方正仿宋_GBK;color:rgb(0,0,0);letter-spacing:0.0000pt;text-transform:none;font-style:normal;font-size:16.0000pt;\">新华社北京11月3日电国务院总理李强11月3日主持召开国务院常务会议，研究推动稀土产业高质量发展有关工作，讨论《中华人民共和国国境卫生检疫法（修订草案）》，审议通过《中华人民共和国专利法实施细则（修正草案）》。</span></p>";
+
+        String subBetween = StrUtil.subBetween(html, "来源：", "</p>");
+        if (StringUtils.isBlank(subBetween)) {
+            subBetween = StrUtil.subBetween(html, "供稿：", "</p>");
+            if (StringUtils.isBlank(subBetween)) {
+                subBetween = StrUtil.subBetween(html, "出处：", "</p>");
+            }
+
+        }
+
+        String contentSource = StringUtils.isBlank(subBetween) ? "" : HtmlUtil.cleanHtmlTag(subBetween);
+        String regex = "(?<!（[^）]{0,12})）(?![^（]*）)";
+        String replace = StrUtil.replace(contentSource, regex, matcher -> "");
+        System.out.println("replace = " + replace);
+
+    }
 
     @Test
     void test() {
@@ -127,7 +198,7 @@ public class HuToolTest {
     }
 
     @Test
-    void test4(){
+    void test4() {
         String html = "<p style=\"font-size:10pt;text-indent:32pt;\"><span style=\"font-family:方正仿宋_GBK;font-size:16pt;\"><font face=\"宋体\">3</font><font face=\"方正仿宋_GBK\">月</font><font face=\"宋体\">17</font><font face=\"方正仿宋_GBK\">日，云南省人民政府研究室党组理论学习中心组举行</font><font face=\"宋体\">2023</font><font face=\"方正仿宋_GBK\">年第一次集中学习，</font></span><span style=\"font-family:方正仿宋_GBK;font-size:16pt;\"><font face=\"方正仿宋_GBK\">学习习近平</font></span><span style=\"font-family:方正仿宋_GBK;font-size:16pt;\"><font face=\"方正仿宋_GBK\">总书记关于中国式现代化的重要论述</font></span><span style=\"font-family:方正仿宋_GBK;font-size:16pt;\"><font face=\"方正仿宋_GBK\">。集中学习邀请省委党校牛建宏教授作专题辅导。</font></span></p><p style=\"font-size:10pt;text-indent:32pt;\"><span style=\"font-family:方正仿宋_GBK;font-size:16pt;\"><font face=\"方正仿宋_GBK\">会议强调，要立足云南实际，担当好以文辅政职责使命，聚焦补短板、强弱项、扬优势、保安全、促团结，锚定</font><font face=\"方正仿宋_GBK\">“</font><font face=\"宋体\">3815</font><font face=\"方正仿宋_GBK\">”战略发展目标加强调查研究，为服务好省委、省政府谱写中国式现代化的云南篇章，贡献云南省人民政府研究室的智慧和力量。</font></span></p>";
         Pattern spanPattern = Pattern.compile("<p[^>]*>(.*?)</p>");
         // 匹配第<span>标签的属性

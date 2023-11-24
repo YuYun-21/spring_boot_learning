@@ -8,21 +8,21 @@ import java.util.stream.Collectors;
  * @since 2023-11-17
  */
 public class MapMain {
-public static void main(String[] args) {
+    public static void main(String[] args) {
 
-    long start = System.currentTimeMillis();
-    Map<String, String> originalMap = createOriginalMap();
+        long start = System.currentTimeMillis();
+        Map<String, String> originalMap = createOriginalMap();
 
-    Map<String, String> resultMap = generateCombinations(originalMap);
+        Map<String, String> resultMap = generateCombinations(originalMap);
 
-    // 打印结果映射
-    resultMap.forEach((key, value) -> System.out.println("\"" + key + "\": \"" + value + "\""));
+        // 打印结果映射
+        resultMap.forEach((key, value) -> System.out.println("\"" + key + "\": \"" + value + "\""));
 
-    System.out.println("result.size() = " + resultMap.size());
+        System.out.println("result.size() = " + resultMap.size());
 
-    long end = System.currentTimeMillis() - start;
-    System.out.println("end = " + end);
-}
+        long end = System.currentTimeMillis() - start;
+        System.out.println("end = " + end);
+    }
 
     private static Map<String, String> generateCombinations(Map<String, String> originalMap) {
         List<String> keys = new ArrayList<>(originalMap.keySet());
