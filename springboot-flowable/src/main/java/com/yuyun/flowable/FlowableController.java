@@ -2,12 +2,12 @@ package com.yuyun.flowable;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
 import org.flowable.bpmn.model.BpmnModel;
 import org.flowable.engine.*;
 import org.flowable.engine.runtime.Execution;
 import org.flowable.engine.runtime.ProcessInstance;
 import org.flowable.image.ProcessDiagramGenerator;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,21 +17,15 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+@RequiredArgsConstructor
 @RestController
 @Api(tags = "流程图")
 public class FlowableController {
 
-    @Autowired
-    RuntimeService runtimeService;
-
-    @Autowired
-    TaskService taskService;
-
-    @Autowired
-    RepositoryService repositoryService;
-
-    @Autowired
-    ProcessEngine processEngine;
+    private final RuntimeService runtimeService;
+    private final TaskService taskService;
+    private final RepositoryService repositoryService;
+    private final ProcessEngine processEngine;
 
     @GetMapping("/pic")
     @ApiOperation(value = "流程图", notes = "图片生成")
@@ -52,27 +46,22 @@ public class FlowableController {
             activityIds.addAll(ids);
         }
 
-        /**
-         * 生成流程图
-         */
+        // 生成流程图
         BpmnModel bpmnModel = repositoryService.getBpmnModel(pi.getProcessDefinitionId());
-        ProcessEngineConfiguration engconf = processEngine.getProcessEngineConfiguration();
-        ProcessDiagramGenerator diagramGenerator = engconf.getProcessDiagramGenerator();
-        InputStream in = diagramGenerator.generateDiagram(bpmnModel, "png", activityIds, flows, engconf.getActivityFontName(), engconf.getLabelFontName(), engconf.getAnnotationFontName(), engconf.getClassLoader(), 1.0, false);
-        OutputStream out = null;
+        ProcessEngineConfiguration engineConf = processEngine.getProcessEngineConfiguration();
+        ProcessDiagramGenerator diagramGenerator = engineConf.getProcessDiagramGenerator();
         byte[] buf = new byte[1024];
-        int legth = 0;
-        try {
-            out = resp.getOutputStream();
-            while ((legth = in.read(buf)) != -1) {
-                out.write(buf, 0, legth);
-            }
-        } finally {
-            if (in != null) {
-                in.close();
-            }
-            if (out != null) {
-                out.close();
+        int length = 0;
+        try (InputStream in = diagramGenerator.generateDiagram(bpmnModel,
+                "png", activityIds, flows,
+                engineConf.getActivityFontName(),
+                engineConf.getLabelFontName(),
+                engineConf.getAnnotationFontName(),
+                engineConf.getClassLoader(),
+                1.0, false);
+             OutputStream out = resp.getOutputStream()) {
+            while ((length = in.read(buf)) != -1) {
+                out.write(buf, 0, length);
             }
         }
     }
