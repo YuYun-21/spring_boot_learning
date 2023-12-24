@@ -1,0 +1,61 @@
+<div id="tp-weather-widget"></div>
+<script>
+    // 这段 JavaScript 代码是一个立即执行函数表达式
+    // T：通常是 window，表示全局对象
+    // h：通常是 document，表示文档对象，即当前页面的 DOM。
+    // i：一个字符串，通常是 "script"，表示要创建的 HTML 元素的类型，这里是一个 script 元素。
+    // n：一个字符串，通常是 "tpwidget"，表示一个标识符，用于创建全局对象 T 中的属性。
+    // k：一个字符串，是指要加载的外部 JavaScript 文件的 URL，这里是天气小部件脚本的 URL。
+    // P、a、g、e：这些参数是函数内部的局部变量，用于临时存储数据或对象。
+    (function (T, h, i, n, k, P, a, g, e) {
+        g = function () {
+            P = h.createElement(i);
+            a = h.getElementsByTagName(i)[0];
+            P.src = k;
+            P.charset = "utf-8";
+            P.async = 1;
+            a.parentNode.insertBefore(P, a)
+        };
+        T["ThinkPageWeatherWidgetObject"] = n;
+        T[n] || (T[n] = function () {
+            (T[n].q = T[n].q || []).push(arguments)
+        });
+        T[n].l = +new Date();
+        if (T.attachEvent) {
+            T.attachEvent("onload", g)
+        } else {
+            T.addEventListener("load", g, false)
+        }
+    }(window, document, "script", "tpwidget", "//widget.seniverse.com/widget/chameleon.js"))
+    // (window, document, "script", "tpwidget", "//widget.seniverse.com/widget/chameleon.js")) 是函数调用的参数，
+    // 用于传递给函数的参数。这些参数将被函数内部的参数 T、h、i、n、k、P、a、g、e 接收和使用。
+</script>
+<script>
+    // 调用tpwidget对象上的init方法 初始化配置
+    tpwidget("init", {
+        // 风格或类型
+        "flavor": "slim",
+        // 显示的地点
+        "location": "WK3N92NQV6RQ",
+        // 是否启用地理位置定位 disabled禁用
+        "geolocation": "disabled",
+        // 语言 简体中文
+        "language": "zh-chs",
+        // 温度单位 摄氏度
+        "unit": "c",
+        // 小部件的主题
+        "theme": "chameleon",
+        // 小部件的容器 表示小部件将在ID为"tp-weather-widget"的 HTML 元素中显示
+        "container": "tp-weather-widget",
+        // 是否启用气泡式气象信息
+        "bubble": "enabled",
+        // 预警类型
+        "alarmType": "badge",
+        // 用户标识
+        "uid": "UE8EB120D0",
+        // 哈希值，用于验证配置的完整性
+        "hash": "c74526577e358dfb1ed5eef1e0218c31"
+    });
+    // 在 tpwidget 对象上调用show方法 显示天气小部件
+    tpwidget("show");
+</script>
