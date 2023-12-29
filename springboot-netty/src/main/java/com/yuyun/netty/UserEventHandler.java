@@ -39,7 +39,8 @@ public class UserEventHandler extends ChannelInboundHandlerAdapter {
             log.info("{} 空闲状态事件：{}", ctx.channel().remoteAddress(), eventType);
 
             // 如果发生空闲事件，关闭连接
-            ctx.close();
+            //ctx.close();
+            //log.info("断开连接");
         }
 
     }

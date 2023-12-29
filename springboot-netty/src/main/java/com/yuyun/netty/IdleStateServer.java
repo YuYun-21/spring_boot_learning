@@ -58,7 +58,7 @@ public class IdleStateServer {
             log.info("server启动。。。。");
             // 绑定一个端口并生成了一个ChannelFuture异步对象，通过isDone()等方法可以判断异步事件的执行情况
             // 启动服务器(并绑定端口)，bind是异步操作，sync方法是等待异步操作执行完毕
-            ChannelFuture channelFuture = bootstrap.bind(9000).sync();
+            ChannelFuture channelFuture = bootstrap.bind(9001).sync();
             // 等待服务端监听端口关闭，closeFuture是异步操作
             // 通过sync方法同步等待通道关闭处理完毕，这里会阻塞等待通道关闭完成，内部调用的是Object的wait()方法
             channelFuture.channel().closeFuture().sync();

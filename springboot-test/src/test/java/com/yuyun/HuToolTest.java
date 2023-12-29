@@ -1,11 +1,21 @@
 package com.yuyun;
 
+import cn.hutool.core.lang.tree.Tree;
+import cn.hutool.core.lang.tree.TreeNodeConfig;
+import cn.hutool.core.lang.tree.TreeUtil;
 import cn.hutool.core.util.ReUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HtmlUtil;
+import com.yuyun.test.lists.Mains;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -18,6 +28,38 @@ import java.util.regex.Pattern;
 public class HuToolTest {
 
     @Test
+    void test7() {
+        //配置
+        TreeNodeConfig treeNodeConfig = new TreeNodeConfig();
+        // 自定义属性名 都要默认值的
+        treeNodeConfig.setWeightKey("order");
+        treeNodeConfig.setIdKey("id");
+        // 最大递归深度
+        treeNodeConfig.setDeep(3);
+
+        List<DeptDto> list = new ArrayList<>();
+        list.add(DeptDto.builder().id(1L).pid(0L).name("云南省").build());
+        list.add(DeptDto.builder().id(101L).pid(1L).name("昆明市").build());
+        list.add(DeptDto.builder().id(102L).pid(1L).name("曲靖市").build());
+        list.add(DeptDto.builder().id(1011L).pid(101L).name("五华区").build());
+
+        //转换器
+        List<Tree<Long>> treeNodes = TreeUtil.build(list, list.get(0).getId(), treeNodeConfig,
+                (treeNode, tree) -> {
+                    tree.setId(treeNode.getId());
+                    tree.setParentId(treeNode.getPid());
+                    tree.setWeight(treeNode.getSort());
+                    tree.setName(treeNode.getName());
+                    // 扩展属性 ...
+                    tree.putExtra("extraField", 666);
+                    tree.putExtra("other", new Object());
+                });
+
+        treeNodes.forEach(tree-> System.out.println("tree = " + tree));
+        System.out.println("treeNodes = " + treeNodes);
+    }
+
+    @Test
     void test6() {
         String regex = "^(?=(.*\\d))(?=(.*[a-z]))(?=(.*[A-Z]))(?=.*[@#$%^&*!+=]).*$";
         System.out.println("ReUtil.isMatch(regex,\"\") = " + ReUtil.isMatch(regex, "iocAdmin123!"));
@@ -28,7 +70,7 @@ public class HuToolTest {
     }
 
     @Test
-    void test5(){
+    void test5() {
         String html = "<p style=\"margin-top:5.0000pt\">&nbsp;</p><p style=\"margin-right:0.0000pt;\"align=\"center\"><span style=\"font-family:方正仿宋_GBK;\">&nbsp;&nbsp;&nbsp;云南省人民政府研究室</span></p><p style=\"margin-top:5.0000pt;\"align=\"justify\"><span style=\"font-family:'Times New Roman';\">2023年3月29日</span></p><p style=\"margin: 0pt; \"align=\"justify\"><span style=\"font-size: 21.3333px;\">附件：<img border=\"0\"src=\"/edittest/ewebeditor/sysimage/icon16/xls.gif\"><a href=\"/edittest/ewebeditor/uploadfile/20230330101140745.xls\"target=\"_blank\">人员名单.xls</a></span></p><p style=\"margin:0pt;\">&nbsp;</p>";
         //String regex = "(?<=云南省人民政府研究室).*?(<p.*?></p>){0,1}<p.*?>(.*?\\d{4}年\\d{1,2}月\\d{1,2}日.*?)</p>";
         String regex = ".*云南省人民政府研究室(?:&nbsp;|&ensp;|\\s)*\\d{4}年\\d{1,2}月\\d{1,2}日.*";
@@ -228,4 +270,15 @@ public class HuToolTest {
         System.out.println("string = " + string);
     }
 
+}
+
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+class DeptDto {
+    private Long id;
+    private Long pid;
+    private String name;
+    private Integer sort;
 }

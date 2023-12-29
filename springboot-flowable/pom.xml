@@ -24,6 +24,8 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
+        <!--optional=true 依赖不会传递，该项目依赖devtools
+	之后依赖该项目的项目如果想要使用devtools，需要重新导入-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
@@ -59,14 +61,6 @@
             <groupId>com.github.xiaoymin</groupId>
             <artifactId>knife4j-spring-boot-starter</artifactId>
             <version>2.0.9</version>
-        </dependency>
-
-        <!--optional=true 依赖不会传递，该项目依赖devtools
-	之后依赖该项目的项目如果想要使用devtools，需要重新导入-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-devtools</artifactId>
-            <optional>true</optional>
         </dependency>
 
     </dependencies>

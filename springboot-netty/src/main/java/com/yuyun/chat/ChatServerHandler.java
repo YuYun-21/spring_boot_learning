@@ -90,6 +90,7 @@ public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         // 关闭通道
         ctx.close();
+        log.info("有异常，通道关闭");
     }
 
     /**
