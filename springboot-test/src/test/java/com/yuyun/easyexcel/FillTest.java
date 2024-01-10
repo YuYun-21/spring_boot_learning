@@ -6,6 +6,7 @@ import com.alibaba.excel.ExcelWriter;
 import com.alibaba.excel.enums.WriteDirectionEnum;
 import com.alibaba.excel.util.ListUtils;
 import com.alibaba.excel.write.merge.LoopMergeStrategy;
+import com.alibaba.excel.write.merge.OnceAbsoluteMergeStrategy;
 import com.alibaba.excel.write.metadata.WriteSheet;
 import com.alibaba.excel.write.metadata.fill.FillConfig;
 import com.alibaba.excel.write.metadata.fill.FillWrapper;
@@ -62,11 +63,20 @@ public class FillTest {
 
         // 方案2 分多次 填充 会使用文件缓存（省内存）
         String fileName = TestFileUtil.getPath() + "listFill" + System.currentTimeMillis() + ".xlsx";
+        // 合并单元格 每两行
         LoopMergeStrategy loopMergeStrategy = new LoopMergeStrategy(2, 0);
-        // 合并单元格 MergeHandler()  可能因为是模版导出 所以将第一行数据的rowIndex视为0
+        // 合并单元格 MergeHandler()
         MergeHandler writeHandler = new MergeHandler(0, new ArrayList<>(Arrays.asList(10, 8)));
+        // 合并单元格
         MergeRowHandler mergeRowHandler = new MergeRowHandler(0);
-        try (ExcelWriter excelWriter = EasyExcel.write(fileName).registerWriteHandler(mergeRowHandler).withTemplate(templateFileName).build()) {
+        // 合并单元格
+        OnceAbsoluteMergeStrategy onceAbsoluteMergeStrategy = new OnceAbsoluteMergeStrategy(0, 1, 0, 2);
+
+        try (ExcelWriter excelWriter = EasyExcel.write(fileName)
+                .registerWriteHandler(mergeRowHandler)
+                // 自动列宽
+                .registerWriteHandler(new MatchColumnWidthStyleStrategy())
+                .withTemplate(templateFileName).build()) {
             WriteSheet writeSheet = EasyExcel.writerSheet().build();
             excelWriter.fill(data(), writeSheet);
         }
