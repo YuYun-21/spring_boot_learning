@@ -8,6 +8,7 @@ import java.util.List;
 
 /**
  * 合并行相同值单元格处理程序
+ * 合并某一列多行 从rowIndex开始，每经过rowList中的值合并一次
  *
  * @author hyh
  * @date 2024/01/05
@@ -43,7 +44,7 @@ public class MergeHandler implements RowWriteHandler {
         if (!context.getHead() && context.getRelativeRowIndex() != null) {
             if (context.getRelativeRowIndex() == this.rowIndex) {
                 this.rowIndex = this.rowIndex + rowList.get(0);
-                CellRangeAddress cellRangeAddress = new CellRangeAddress(context.getRowIndex(), context.getRowIndex() -1+ rowList.get(0), this.columnIndex, this.columnIndex);
+                CellRangeAddress cellRangeAddress = new CellRangeAddress(context.getRowIndex(), context.getRowIndex() - 1 + rowList.get(0), this.columnIndex, this.columnIndex);
                 context.getWriteSheetHolder().getSheet().addMergedRegionUnsafe(cellRangeAddress);
                 rowList.remove(0);
             }

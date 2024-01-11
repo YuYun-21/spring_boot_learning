@@ -1,10 +1,12 @@
 package com.yuyun.easyexcel;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.io.resource.ResourceUtil;
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.ExcelWriter;
 import com.alibaba.excel.enums.WriteDirectionEnum;
 import com.alibaba.excel.util.ListUtils;
+import com.alibaba.excel.write.merge.AbstractMergeStrategy;
 import com.alibaba.excel.write.merge.LoopMergeStrategy;
 import com.alibaba.excel.write.merge.OnceAbsoluteMergeStrategy;
 import com.alibaba.excel.write.metadata.WriteSheet;
@@ -22,6 +24,36 @@ import java.util.*;
  * @since 2024-01-04
  */
 public class FillTest {
+
+    /**
+     * 填充列表 合并列
+     *
+     * @since 2.1.1
+     */
+    @Test
+    public void listFill1() {
+        // 模板注意 用{} 来表示你要用的变量 如果本来就有"{","}" 特殊字符 用"\{","\}"代替
+        // 填充list 的时候还要注意 模板中{.} 多了个点 表示list
+        // 如果填充list的对象是map,必须包涵所有list的key,哪怕数据为null，必须使用map.put(key,null)
+        URL resource = ResourceUtil.getResource("template/list1.xlsx");
+        //
+        String templateFileName = resource.getPath();
+
+        // 方案2 分多次 填充 会使用文件缓存（省内存）
+        String fileName = TestFileUtil.getPath() + "listFill1" + System.currentTimeMillis() + ".xlsx";
+
+        // 合并单元格
+        OnceAbsoluteMergeStrategy onceAbsoluteMergeStrategy = new OnceAbsoluteMergeStrategy(0, 1, 0, 2);
+        FillConfig fillConfig = FillConfig.builder().direction(WriteDirectionEnum.HORIZONTAL).build();
+        try (ExcelWriter excelWriter = EasyExcel.write(fileName)
+                // 自动列宽
+                //.registerWriteHandler(new MergeCellHandler1(5, 4, CollUtil.newArrayList(10,8)))
+                .registerWriteHandler(new MergeCellHandler(0, 1, CollUtil.newArrayList(10, 8)))
+                .withTemplate(templateFileName).build()) {
+            WriteSheet writeSheet = EasyExcel.writerSheet().build();
+            excelWriter.fill(data(), fillConfig, writeSheet);
+        }
+    }
 
     /**
      * 最简单的写
