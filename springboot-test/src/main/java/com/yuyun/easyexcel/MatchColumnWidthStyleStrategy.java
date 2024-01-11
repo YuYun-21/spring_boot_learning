@@ -15,6 +15,7 @@ import java.util.Map;
 
 /**
  * 匹配列宽样式策略 自动列宽
+ * {重写 LongestMatchColumnWidthStyleStrategy}
  *
  * @author hyh
  * @date 2024/01/09

@@ -12,6 +12,7 @@ import com.alibaba.excel.write.merge.OnceAbsoluteMergeStrategy;
 import com.alibaba.excel.write.metadata.WriteSheet;
 import com.alibaba.excel.write.metadata.fill.FillConfig;
 import com.alibaba.excel.write.metadata.fill.FillWrapper;
+import com.alibaba.excel.write.style.row.SimpleRowHeightStyleStrategy;
 import org.junit.jupiter.api.Test;
 
 import java.net.URL;
@@ -108,9 +109,15 @@ public class FillTest {
                 .registerWriteHandler(mergeRowHandler)
                 // 自动列宽
                 .registerWriteHandler(new MatchColumnWidthStyleStrategy())
+                .registerWriteHandler(new SimpleRowHeightStyleStrategy(null, (short) 25))
                 .withTemplate(templateFileName).build()) {
+            FillConfig fillConfig = FillConfig.builder()
+                    .direction(WriteDirectionEnum.VERTICAL)
+                    // 为true list遍历的新数据 不需要创建新表格 也就是不会覆盖模版中后面几行已有的数据
+                    .forceNewRow(true)
+                    .build();
             WriteSheet writeSheet = EasyExcel.writerSheet().build();
-            excelWriter.fill(data(), writeSheet);
+            excelWriter.fill(data(), fillConfig, writeSheet);
         }
     }
 
@@ -137,10 +144,22 @@ public class FillTest {
         // 方案1
         try (ExcelWriter excelWriter = EasyExcel.write(fileName).withTemplate(templateFileName).build()) {
             WriteSheet writeSheet = EasyExcel.writerSheet().build();
-            FillConfig fillConfig = FillConfig.builder().direction(WriteDirectionEnum.HORIZONTAL).build();
+            FillConfig fillConfig = FillConfig.builder()
+                    .direction(WriteDirectionEnum.HORIZONTAL)
+                    // 是否复制样式
+                    .autoStyle(false)
+                    // 为true list遍历的新数据 不需要创建新表格 也就是不会覆盖模版中后面几行已有的数据
+                    .forceNewRow(true)
+                    .build();
+            FillConfig fillConfig1 = FillConfig.builder()
+                    .direction(WriteDirectionEnum.VERTICAL)
+                    .forceNewRow(true)
+                    // 是否复制样式
+                    .autoStyle(false)
+                    .build();
             // 如果有多个list 模板上必须有{前缀.} 这里的前缀就是 data1，然后多个list必须用 FillWrapper包裹
             excelWriter.fill(new FillWrapper("data1", data()), fillConfig, writeSheet);
-            excelWriter.fill(new FillWrapper("data2", data()), writeSheet);
+            excelWriter.fill(new FillWrapper("data2", data()), fillConfig1, writeSheet);
             excelWriter.fill(new FillWrapper("data3", data()), writeSheet);
 
             Map<String, Object> map = new HashMap<String, Object>();
