@@ -145,13 +145,16 @@ public class FillTest {
         try (ExcelWriter excelWriter = EasyExcel.write(fileName).withTemplate(templateFileName).build()) {
             WriteSheet writeSheet = EasyExcel.writerSheet().build();
             FillConfig fillConfig = FillConfig.builder()
+                    // 横向遍历
                     .direction(WriteDirectionEnum.HORIZONTAL)
                     // 是否复制样式
                     .autoStyle(false)
                     // 为true list遍历的新数据 不需要创建新表格 也就是不会覆盖模版中后面几行已有的数据
+                    // 横向遍历的时候不生效
                     .forceNewRow(true)
                     .build();
             FillConfig fillConfig1 = FillConfig.builder()
+                    // 纵向向下遍历
                     .direction(WriteDirectionEnum.VERTICAL)
                     .forceNewRow(true)
                     // 是否复制样式
