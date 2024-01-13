@@ -1,7 +1,10 @@
 package com.yuyun.easyexcel;
 
+import cn.afterturn.easypoi.excel.ExcelExportUtil;
+import cn.afterturn.easypoi.excel.entity.TemplateExportParams;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.io.resource.ResourceUtil;
+import cn.hutool.core.util.ZipUtil;
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.ExcelWriter;
 import com.alibaba.excel.enums.WriteDirectionEnum;
@@ -13,10 +16,20 @@ import com.alibaba.excel.write.metadata.WriteSheet;
 import com.alibaba.excel.write.metadata.fill.FillConfig;
 import com.alibaba.excel.write.metadata.fill.FillWrapper;
 import com.alibaba.excel.write.style.row.SimpleRowHeightStyleStrategy;
+import com.sun.xml.internal.messaging.saaj.util.ByteOutputStream;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.junit.jupiter.api.Test;
+import org.springframework.ui.ModelMap;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 /**
  * 写的填充写法
@@ -25,6 +38,40 @@ import java.util.*;
  * @since 2024-01-04
  */
 public class FillTest {
+
+    /**
+     * 最简单的写
+     * <p>
+     * 1. 创建excel对应的实体对象 参照{@link DemoData}
+     * <p>
+     * 2. 直接写即可
+     */
+    @Test
+    public void simpleWriteZip() throws IOException {
+        FileOutputStream fileOutputStream = new FileOutputStream(TestFileUtil.getPath() + "simpleWriteZip" + System.currentTimeMillis() + ".zip");
+
+        ZipOutputStream zipOutputStream = new ZipOutputStream(fileOutputStream);
+
+        for (int i = 0; i < 10; i++) {
+            // 写法1 JDK8+
+            String fileName = i + "simpleWrite" + System.currentTimeMillis() + ".xlsx";
+            // 这里 需要指定写用哪个class去写，然后写到第一个sheet，名字为模板 然后文件流会自动关闭
+            // 如果这里想使用03 则 传入excelType参数即可
+
+            ByteOutputStream byteOutputStream = new ByteOutputStream();
+            zipOutputStream.putNextEntry(new ZipEntry(fileName));
+            EasyExcel.write(byteOutputStream, DemoData.class)
+                    .sheet("模板")
+                    // 分页查询数据
+                    .doWrite(this::demoData);
+            byteOutputStream.writeTo(zipOutputStream);
+
+            byteOutputStream.close();
+            zipOutputStream.closeEntry();
+        }
+        zipOutputStream.close();
+        fileOutputStream.close();
+    }
 
     /**
      * 填充列表 合并列
@@ -139,7 +186,6 @@ public class FillTest {
         //String fileName = path + "compositeFill" + System.currentTimeMillis() + ".xlsx";
         //templateFileName =
         //        TestFileUtil.getPath() + "demo" + File.separator + "composite.xlsx";
-
         String fileName = TestFileUtil.getPath() + "compositeFill" + System.currentTimeMillis() + ".xlsx";
         // 方案1
         try (ExcelWriter excelWriter = EasyExcel.write(fileName).withTemplate(templateFileName).build()) {

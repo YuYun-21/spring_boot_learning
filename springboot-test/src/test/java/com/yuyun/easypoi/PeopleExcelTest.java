@@ -1,8 +1,10 @@
 package com.yuyun.easypoi;
 
+import cn.afterturn.easypoi.excel.ExcelExportUtil;
 import cn.afterturn.easypoi.excel.ExcelImportUtil;
 import cn.afterturn.easypoi.excel.entity.ExportParams;
 import cn.afterturn.easypoi.excel.entity.ImportParams;
+import cn.afterturn.easypoi.excel.entity.TemplateExportParams;
 import cn.afterturn.easypoi.excel.entity.enmus.ExcelType;
 import cn.afterturn.easypoi.excel.entity.result.ExcelImportResult;
 import cn.hutool.core.util.StrUtil;
@@ -18,13 +20,21 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.stereotype.Component;
+import org.springframework.ui.ModelMap;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 /**
  * Excel数据下拉选择测试
@@ -94,6 +104,51 @@ public class PeopleExcelTest {
             System.out.println("errorMsgList = " + JSON.toJSONString(errorMsgList));
         } catch (Exception e) {
             log.error(e.getMessage(), e);
+        }
+    }
+
+    public void export(HttpServletResponse response, HttpServletRequest request, ModelMap modelMap) {
+        try {
+            String fileName = "批量导出.zip";
+            response.setContentType("application/octet-stream");
+            response.setHeader("Connection", "close"); // 表示不能用浏览器直接打开
+            response.setHeader("Accept-Ranges", "bytes");// 告诉客户端允许断点续传多线程连接下载
+            response.setHeader("Content-Disposition",
+                    "attachment;filename=" + new String(fileName.getBytes("GB2312"), "ISO8859-1"));
+            response.setCharacterEncoding("UTF-8");
+
+            OutputStream out = response.getOutputStream();
+            ZipOutputStream zos = new ZipOutputStream(out);
+
+            //读取路径下的模板
+            TemplateExportParams params = new TemplateExportParams("导出模板.xlsx");
+            //获取业务数据逻辑
+            List<HashMap<String, Object>> exportList = new ArrayList<>();
+
+            //循环导出
+            for (HashMap<String, Object> map : exportList) {
+                //导出的文件名称
+                String entryName = (String) map.get("title") + ".xlsx";
+                ZipEntry entry = new ZipEntry(entryName);
+                //easypoi 导出excel文件
+                Workbook workbook = ExcelExportUtil.exportExcel(params, map);
+                //编写新的zip条目，并将流定位到条目数据的开头
+                zos.putNextEntry(entry);
+                //workBook.write会指定关闭数据流，直接用workbook.write(zos)，下次就会抛出zos已被关闭的异常，所以用ByteArrayOutputStream来拷贝一下。
+                ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                //workbook写入bos
+                workbook.write(bos);
+                //bos写入zos
+                bos.writeTo(zos);
+                zos.closeEntry();
+            }
+            if(zos != null) {
+                zos.flush();
+                zos.close();
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
