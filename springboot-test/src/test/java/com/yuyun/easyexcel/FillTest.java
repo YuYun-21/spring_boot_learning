@@ -48,29 +48,28 @@ public class FillTest {
      */
     @Test
     public void simpleWriteZip() throws IOException {
-        FileOutputStream fileOutputStream = new FileOutputStream(TestFileUtil.getPath() + "simpleWriteZip" + System.currentTimeMillis() + ".zip");
 
-        ZipOutputStream zipOutputStream = new ZipOutputStream(fileOutputStream);
+        // 使用try-with-resource语法关闭流
+        try (FileOutputStream fileOutputStream = new FileOutputStream(TestFileUtil.getPath() + "simpleWriteZip" + System.currentTimeMillis() + ".zip");
+        ZipOutputStream zipOutputStream = new ZipOutputStream(fileOutputStream)) {
 
-        for (int i = 0; i < 10; i++) {
-            // 写法1 JDK8+
-            String fileName = i + "simpleWrite" + System.currentTimeMillis() + ".xlsx";
-            // 这里 需要指定写用哪个class去写，然后写到第一个sheet，名字为模板 然后文件流会自动关闭
-            // 如果这里想使用03 则 传入excelType参数即可
+            for (int i = 0; i < 10; i++) {
+                // 写法1 JDK8+
+                String fileName = i + "simpleWrite" + System.currentTimeMillis() + ".xlsx";
+                // 这里 需要指定写用哪个class去写，然后写到第一个sheet，名字为模板 然后文件流会自动关闭
+                // 如果这里想使用03 则 传入excelType参数即可
 
-            ByteOutputStream byteOutputStream = new ByteOutputStream();
-            zipOutputStream.putNextEntry(new ZipEntry(fileName));
-            EasyExcel.write(byteOutputStream, DemoData.class)
-                    .sheet("模板")
-                    // 分页查询数据
-                    .doWrite(this::demoData);
-            byteOutputStream.writeTo(zipOutputStream);
-
-            byteOutputStream.close();
-            zipOutputStream.closeEntry();
+                try (ByteOutputStream byteOutputStream = new ByteOutputStream()) {
+                    zipOutputStream.putNextEntry(new ZipEntry(fileName));
+                    EasyExcel.write(byteOutputStream, DemoData.class)
+                            .sheet("模板")
+                            // 分页查询数据
+                            .doWrite(this::demoData);
+                    byteOutputStream.writeTo(zipOutputStream);
+                }
+                zipOutputStream.closeEntry();
+            }
         }
-        zipOutputStream.close();
-        fileOutputStream.close();
     }
 
     /**
