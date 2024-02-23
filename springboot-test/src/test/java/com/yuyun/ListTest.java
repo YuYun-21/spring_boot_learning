@@ -1,15 +1,54 @@
 package com.yuyun;
 
 import com.yuyun.dto.People;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.junit.jupiter.api.Test;
 
+import java.math.BigDecimal;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author hyh
  * @since 2023-08-29
  */
 public class ListTest {
+
+    @Test
+    void test() {
+        List<Foot> footList = new ArrayList<>();
+        footList.add(new Foot("西红柿", 30));
+        footList.add(new Foot("白菜", 1056));
+        footList.add(new Foot("青菜", 5));
+        footList.add(new Foot("豆腐", 1589));
+
+        IntSummaryStatistics collect = footList.stream().collect(Collectors.summarizingInt(Foot::getNumber));
+        System.out.println("collect = " + collect);
+
+        List<Foot> footList1 = new ArrayList<>();
+        IntSummaryStatistics collect1 = footList1.stream().collect(Collectors.summarizingInt(Foot::getNumber));
+        System.out.println("collect1 = " + collect1);
+
+        double i = (double) 3 / 2;
+        double g = (double) 7 / 3;
+        System.out.println("i = " + String.valueOf(i));
+        BigDecimal decimal = new BigDecimal(i);
+        System.out.println("decimal = " + decimal);
+
+        BigDecimal bigDouble1 = new BigDecimal(g);
+        BigDecimal bigDouble2 = new BigDecimal(i);
+        BigDecimal douDifference = new BigDecimal(0);
+        //BigDecimal求差
+        douDifference = bigDouble1.subtract(bigDouble2);
+        System.out.println("差 :" + douDifference);
+        System.out.println("差 :" + douDifference.doubleValue());
+        System.out.println("差 :" + BigDecimal.valueOf(douDifference.doubleValue()));
+        //打印输出
+
+    }
 
     /**
      * 将特定的元素移到第一位
@@ -116,4 +155,13 @@ public class ListTest {
         System.out.println("去重集合:" + set);
     }
 
+}
+
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+class Foot {
+    private String name;
+    private Integer number;
 }

@@ -1,15 +1,11 @@
 package com.yuyun.easyexcel;
 
-import cn.afterturn.easypoi.excel.ExcelExportUtil;
-import cn.afterturn.easypoi.excel.entity.TemplateExportParams;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.io.resource.ResourceUtil;
-import cn.hutool.core.util.ZipUtil;
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.ExcelWriter;
 import com.alibaba.excel.enums.WriteDirectionEnum;
 import com.alibaba.excel.util.ListUtils;
-import com.alibaba.excel.write.merge.AbstractMergeStrategy;
 import com.alibaba.excel.write.merge.LoopMergeStrategy;
 import com.alibaba.excel.write.merge.OnceAbsoluteMergeStrategy;
 import com.alibaba.excel.write.metadata.WriteSheet;
@@ -17,16 +13,11 @@ import com.alibaba.excel.write.metadata.fill.FillConfig;
 import com.alibaba.excel.write.metadata.fill.FillWrapper;
 import com.alibaba.excel.write.style.row.SimpleRowHeightStyleStrategy;
 import com.sun.xml.internal.messaging.saaj.util.ByteOutputStream;
-import org.apache.poi.ss.usermodel.Workbook;
 import org.junit.jupiter.api.Test;
-import org.springframework.ui.ModelMap;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.*;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -51,7 +42,7 @@ public class FillTest {
 
         // 使用try-with-resource语法关闭流
         try (FileOutputStream fileOutputStream = new FileOutputStream(TestFileUtil.getPath() + "simpleWriteZip" + System.currentTimeMillis() + ".zip");
-        ZipOutputStream zipOutputStream = new ZipOutputStream(fileOutputStream)) {
+             ZipOutputStream zipOutputStream = new ZipOutputStream(fileOutputStream)) {
 
             for (int i = 0; i < 10; i++) {
                 // 写法1 JDK8+
@@ -94,8 +85,8 @@ public class FillTest {
         FillConfig fillConfig = FillConfig.builder().direction(WriteDirectionEnum.HORIZONTAL).build();
         try (ExcelWriter excelWriter = EasyExcel.write(fileName)
                 // 自动列宽
-                //.registerWriteHandler(new MergeCellHandler1(5, 4, CollUtil.newArrayList(10,8)))
-                .registerWriteHandler(new MergeCellHandler(0, 1, CollUtil.newArrayList(10, 8)))
+                .registerWriteHandler(new MergeCellHandler1(1, 0, CollUtil.newArrayList(10, 8)))
+                //.registerWriteHandler(new MergeCellHandler(0, 1, CollUtil.newArrayList(10, 8)))
                 .withTemplate(templateFileName).build()) {
             WriteSheet writeSheet = EasyExcel.writerSheet().build();
             excelWriter.fill(data(), fillConfig, writeSheet);
@@ -152,7 +143,7 @@ public class FillTest {
         OnceAbsoluteMergeStrategy onceAbsoluteMergeStrategy = new OnceAbsoluteMergeStrategy(0, 1, 0, 2);
 
         try (ExcelWriter excelWriter = EasyExcel.write(fileName)
-                .registerWriteHandler(mergeRowHandler)
+                .registerWriteHandler(loopMergeStrategy)
                 // 自动列宽
                 .registerWriteHandler(new MatchColumnWidthStyleStrategy())
                 .registerWriteHandler(new SimpleRowHeightStyleStrategy(null, (short) 25))

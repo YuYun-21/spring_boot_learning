@@ -7,17 +7,12 @@ import cn.hutool.core.codec.Base64;
 import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.core.util.HexUtil;
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.crypto.SecureUtil;
-import cn.hutool.crypto.asymmetric.AsymmetricCrypto;
 import cn.hutool.crypto.asymmetric.KeyType;
 import cn.hutool.crypto.asymmetric.RSA;
 import org.junit.jupiter.api.Test;
-import org.springframework.util.Assert;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.nio.charset.StandardCharsets;
-import java.text.DecimalFormat;
 import java.util.Arrays;
 
 /**
@@ -38,7 +33,7 @@ public class EncryptDecryptTest {
                 "M6BsO5mVuE/snwEh1MZlUT16mKQIDAQAB";
         RSA rsa = new RSA(null, public_key);
         // 公钥加密，私钥解密
-        byte[] encrypt = rsa.encrypt(StrUtil.bytes("a80331", CharsetUtil.CHARSET_UTF_8), KeyType.PublicKey);
+        byte[] encrypt = rsa.encrypt(StrUtil.bytes("249730", CharsetUtil.CHARSET_UTF_8), KeyType.PublicKey);
         System.out.println("encrypt = " + Arrays.toString(encrypt));
         System.out.println("encrypt = " + Base64.encode(encrypt));
     }

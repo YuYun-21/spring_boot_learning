@@ -1,21 +1,65 @@
 package com.yuyun;
 
 import com.alibaba.fastjson.JSON;
+import com.yuyun.easyexcel.DemoData;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 /**
  * @author hyh
  * @since 2023-11-17
  */
 public class MapTest {
+    /**
+     * 将集合映射
+     *
+     * @param collection   集合            List<SysDept>
+     * @param keyMapper    密钥映射器       SysDept::getDeptId
+     * @param valueMapper  值映射器         SysDept::getDeptName
+     * @param keyList      密钥列表         List<Long>
+     * @param defaultValue 默认值           ""
+     * @return {@link Map}<{@link K}, {@link V}>
+     */
+    public static <E, K, V> Map<K, V> toMap(Collection<E> collection,
+                                            Function<E, K> keyMapper,
+                                            Function<E, V> valueMapper,
+                                            Collection<K> keyList,
+                                            V defaultValue) {
+
+
+        return collection.stream().collect(Collectors.toMap(
+                keyMapper,
+                valueMapper,
+                (a, b) -> b,
+                () -> {
+                    Map<K, V> emptyMap = new HashMap<>(keyList.size());
+                    keyList.forEach(id -> emptyMap.put(id, defaultValue));
+                    return emptyMap;
+                }
+        ));
+    }
 
     @Test
-    void test(){
+    void test1() {
+        List<DemoData> list = new ArrayList<>();
+        List<String> stringList = new ArrayList<>();
+        stringList.add("333");
+        stringList.add("fdaf");
+        stringList.add("erew");
+        stringList.add("543");
+        Map<String, String> map = toMap(list, DemoData::getString, DemoData::getIgnore, stringList, "");
+        System.out.println("map = " + map);
+
+        for (int i = 1; i < 3; i++) {
+            System.out.println("i = " + i);
+        }
+    }
+
+    @Test
+    void test() {
 
         long start = System.currentTimeMillis();
         Map<String, String> inputMap = new HashMap<>();

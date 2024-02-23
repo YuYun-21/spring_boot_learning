@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 public class RegularExpressionTest {
 
     @Test
-    void test(){
+    void test() {
         String input = "帮扶工 作 。2023年7月27。  哈哈哈哈骗你的";
 
         // 使用正则表达式替换文字后面的空格
@@ -25,7 +25,7 @@ public class RegularExpressionTest {
     }
 
     @Test
-    void test1(){
+    void test1() {
         String input = "1234567890";
 
         // 使用正则表达式替换文字后面的空格
