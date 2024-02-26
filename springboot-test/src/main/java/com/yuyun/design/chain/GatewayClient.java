@@ -1,4 +1,4 @@
-package com.yuyun.design;
+package com.yuyun.design.chain;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -34,9 +34,9 @@ class GatewayEntity {
 @Getter
 enum GatewayEnum {
     // handlerId, 拦截者名称，全限定类名，上一个handler，下一个handler
-    API_HANDLER(new GatewayEntity(1, "api接口限流", "com.yuyun.design.ApiLimitGatewayHandler", null, 2)),
-    BLACKLIST_HANDLER(new GatewayEntity(2, "黑名单拦截", "com.yuyun.design.BlacklistGatewayHandler", 1, 3)),
-    SESSION_HANDLER(new GatewayEntity(3, "用户会话拦截", "com.yuyun.design.SessionGatewayHandler", 2, null)),
+    API_HANDLER(new GatewayEntity(1, "api接口限流", "com.yuyun.design.chain.ApiLimitGatewayHandler", null, 2)),
+    BLACKLIST_HANDLER(new GatewayEntity(2, "黑名单拦截", "com.yuyun.design.chain.BlacklistGatewayHandler", 1, 3)),
+    SESSION_HANDLER(new GatewayEntity(3, "用户会话拦截", "com.yuyun.design.chain.SessionGatewayHandler", 2, null)),
     ;
 
     GatewayEntity gatewayEntity;

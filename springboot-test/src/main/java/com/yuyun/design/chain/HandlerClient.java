@@ -1,4 +1,4 @@
-package com.yuyun.design;
+package com.yuyun.design.chain;
 
 abstract class AbstractHandler {
 
