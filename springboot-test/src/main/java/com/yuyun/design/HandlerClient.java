@@ -16,7 +16,7 @@ abstract class AbstractHandler {
      *
      * @return int
      */
-    public abstract int handler();
+    public abstract void handler();
 }
 
 class FirstPassHandler extends AbstractHandler {
@@ -26,16 +26,15 @@ class FirstPassHandler extends AbstractHandler {
     }
 
     @Override
-    public int handler() {
+    public void handler() {
         System.out.println("第一关-->FirstPassHandler");
         int score = play();
         if (score >= 80) {
             //分数>=80 并且存在下一关才进入下一关
             if (this.next != null) {
-                return this.next.handler();
+                this.next.handler();
             }
         }
-        return score;
     }
 }
 
@@ -45,18 +44,17 @@ class SecondPassHandler extends AbstractHandler {
         return 90;
     }
 
-    public int handler() {
+    public void handler() {
         System.out.println("第二关-->SecondPassHandler");
 
         int score = play();
         if (score >= 90) {
             //分数>=90 并且存在下一关才进入下一关
             if (this.next != null) {
-                return this.next.handler();
+                this.next.handler();
             }
         }
 
-        return score;
     }
 }
 
@@ -66,16 +64,15 @@ class ThirdPassHandler extends AbstractHandler {
         return 95;
     }
 
-    public int handler() {
+    public void handler() {
         System.out.println("第三关-->ThirdPassHandler");
         int score = play();
         if (score >= 95) {
             //分数>=95 并且存在下一关才进入下一关
             if (this.next != null) {
-                return this.next.handler();
+                this.next.handler();
             }
         }
-        return score;
     }
 }
 
