@@ -6,6 +6,7 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.lang.tree.Tree;
 import cn.hutool.core.lang.tree.TreeNodeConfig;
 import cn.hutool.core.lang.tree.TreeUtil;
+import cn.hutool.core.util.IdcardUtil;
 import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.ReUtil;
 import cn.hutool.core.util.StrUtil;
@@ -33,6 +34,12 @@ import java.util.regex.Pattern;
  */
 public class HuToolTest {
 
+    @Test
+    void test2() {
+        String sfz = "532225197104120935";
+
+        System.out.println("IdcardUtil.isValidCard(sfz) = " + IdcardUtil.isValidCard(sfz));
+    }
     @Test
     void dateTest() {
         String dateStr1 = "2017-04-01 22:33:23";
