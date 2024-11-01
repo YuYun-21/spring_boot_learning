@@ -61,6 +61,11 @@
             <artifactId>easyexcel</artifactId>
             <version>3.1.5</version>
         </dependency>
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcprov-jdk15to18</artifactId>
+            <version>1.68</version>
+        </dependency>
     </dependencies>
 
     <build>

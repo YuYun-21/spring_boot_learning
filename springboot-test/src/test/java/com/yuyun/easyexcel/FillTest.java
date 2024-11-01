@@ -200,6 +200,7 @@ public class FillTest {
             excelWriter.fill(new FillWrapper("data1", data()), fillConfig, writeSheet);
             excelWriter.fill(new FillWrapper("data2", data()), fillConfig1, writeSheet);
             excelWriter.fill(new FillWrapper("data3", data()), writeSheet);
+            excelWriter.fill(new FillWrapper("data4", data4()), writeSheet);
 
             Map<String, Object> map = new HashMap<String, Object>();
             //map.put("date", "2019年10月9日13:28:28");
@@ -226,6 +227,29 @@ public class FillTest {
             fillData.setDate(new Date());
             list.add(fillData);
         }
+
+        return list;
+    }
+
+    private List<FillData> data4() {
+        List<FillData> list = ListUtils.newArrayList();
+        for (int i = 0; i < 5; i++) {
+            FillData fillData = new FillData();
+            fillData.setName("张物业");
+            fillData.setNumber(5.2);
+            fillData.setDate(new Date());
+            List<FillData> list1 = new ArrayList<>();
+            for (int j = 0; j < 8; j++) {
+                FillData fillData1 = new FillData();
+                fillData1.setName("小二郎");
+                fillData1.setNumber(5.33);
+                fillData1.setDate(new Date());
+                list1.add(fillData1);
+            }
+            fillData.setFillDataList(list1);
+            list.add(fillData);
+        }
+
 
         return list;
     }

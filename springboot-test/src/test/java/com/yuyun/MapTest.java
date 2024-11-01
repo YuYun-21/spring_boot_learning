@@ -1,10 +1,14 @@
 package com.yuyun;
 
+import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSON;
 import com.yuyun.easyexcel.DemoData;
 import org.junit.jupiter.api.Test;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -13,6 +17,89 @@ import java.util.stream.Collectors;
  * @since 2023-11-17
  */
 public class MapTest {
+
+    @Test
+    void test3() {
+        String ratio = "";
+        // 去除百分号，并将字符串转换为 BigDecimal
+        String ratioCleaned = ratio.replace("%", "");
+        // 扣款比例 已去除百分号
+        BigDecimal ratioDecimal = StrUtil.isBlank(ratio) ? BigDecimal.ONE : new BigDecimal(ratio.replace("%", "")).divide(new BigDecimal("100"), 5, RoundingMode.HALF_DOWN);
+        System.out.println("ratioDecimal = " + ratioDecimal);
+
+        BigDecimal bigDecimal = BigDecimal.ONE.scaleByPowerOfTen(2);
+        System.out.println("bigDecimal = " + bigDecimal);
+        BigDecimal divide = new BigDecimal("12.254").divide(bigDecimal, 5, RoundingMode.HALF_DOWN);
+        BigDecimal multiply = new BigDecimal("12.254").multiply(bigDecimal);
+        System.out.println("divide = " + divide);
+        System.out.println("multiply = " + multiply);
+
+        BigDecimal bigDecimal1 = parsePercentage("");
+        System.out.println("bigDecimal1 = " + bigDecimal1);
+
+        BigDecimal bigDecimal2 = new BigDecimal("12.25400").movePointLeft(2);
+        System.out.println("bigDecimal2 = " + bigDecimal2);
+        System.out.println("bigDecimal2 = " + bigDecimal2 + "%");
+        System.out.println("bigDecimal2 = " + bigDecimal2.stripTrailingZeros() + "%");
+        System.out.println("bigDecimal2.toString() = " + new BigDecimal("12.254").divide(bigDecimal2, 5, RoundingMode.HALF_DOWN));
+
+    }
+    // 方法：将BigDecimal表示的百分比转换为不带尾随零的字符串形式
+    public static String formatPercentage(BigDecimal percentage) {
+        // 将百分比乘以100，以转换为正常的百分数
+        BigDecimal scaledPercentage = percentage.multiply(BigDecimal.valueOf(100));
+        // 去除尾随的零
+        BigDecimal strippedPercentage = scaledPercentage.stripTrailingZeros();
+        // 转换为字符串并添加百分号
+        return strippedPercentage.toPlainString() + "%";
+    }
+
+    public static BigDecimal parsePercentage(String ratio, int scale, RoundingMode roundingMode) {
+
+        return StrUtil.isBlank(ratio) ? BigDecimal.ONE : new BigDecimal(ratio.replace("%", ""))
+                .divide(BigDecimal.ONE.scaleByPowerOfTen(2), scale, roundingMode);
+    }
+
+    /**
+     * 解析百分比
+     *
+     * @param ratio 比率
+     * @return {@link BigDecimal }
+     */
+    public static BigDecimal parsePercentage(String ratio) {
+
+        return parsePercentage(ratio, 5, RoundingMode.HALF_DOWN);
+    }
+
+    @Test
+    void test2() {
+        Map<String, Integer> map = new HashMap<>();
+
+        // 示例的数据
+        String key = "exampleKey";
+        int valueToAdd = 5;
+
+        // 使用 computeIfAbsent 初始化 map
+        map.computeIfAbsent(key, k -> 0);
+
+        // 获取或计算值
+        int currentValue = map.get(key);
+
+        // 在值上执行操作
+        map.put(key, currentValue + valueToAdd);
+
+        // 打印结果
+        System.out.println(map.get(key)); // 输出 5
+
+        Long deptId = 11L;
+        Map<Long, AtomicReference<BigDecimal>> subtotalDecimalAtomicMap = new HashMap<>();
+        // 使用 computeIfAbsent 初始化 subtotalDecimalAtomicMap
+        subtotalDecimalAtomicMap.computeIfAbsent(deptId, k -> new AtomicReference<>(BigDecimal.ZERO));
+        AtomicReference<BigDecimal> bigDecimalAtomicReference = subtotalDecimalAtomicMap.get(deptId);
+        BigDecimal bigDecimal = bigDecimalAtomicReference.get();
+        System.out.println("bigDecimal = " + bigDecimal);
+    }
+
     /**
      * 将集合映射
      *

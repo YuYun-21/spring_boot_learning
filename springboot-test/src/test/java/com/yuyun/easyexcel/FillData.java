@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author hyh
@@ -19,4 +20,5 @@ class FillData {
     private String name;
     private double number;
     private Date date;
+    private List<FillData> fillDataList;
 }

@@ -27,6 +27,7 @@ public class MatchColumnWidthStyleStrategy extends AbstractColumnWidthStyleStrat
     private static final int MAX_COLUMN_WIDTH = 255;
     private final Map<Integer, Map<Integer, Integer>> cache = new HashMap<>(8);
 
+    @Override
     protected void setColumnWidth(WriteSheetHolder writeSheetHolder, List<WriteCellData<?>> cellDataList, Cell cell, Head head, Integer relativeRowIndex, Boolean isHead) {
         boolean needSetWidth = isHead || !CollectionUtils.isEmpty(cellDataList);
         if (needSetWidth) {

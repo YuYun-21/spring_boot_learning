@@ -31,6 +31,7 @@ public class StartedUpRunner implements ApplicationRunner {
     @Value("${server.servlet.context-path:}")
     private String contextPath;
 
+    @Override
     public void run(ApplicationArguments args) throws Exception {
         if (this.context.isActive()) {
             log.info("==> 系统启动完毕");
@@ -52,6 +53,11 @@ public class StartedUpRunner implements ApplicationRunner {
                 interfaceAddresses.forEach(interfaceAddress->{
                     InetAddress inetAddress = interfaceAddress.getAddress();
                     if (inetAddress instanceof Inet4Address) {
+                        String hostName = inetAddress.getHostName();
+                        String canonicalHostName = inetAddress.getCanonicalHostName();
+                        System.out.println("hostName = " + hostName);
+                        System.out.println("canonicalHostName = " + canonicalHostName);
+                        System.out.println("inetAddress.getAddress() = " + inetAddress.getAddress());
                         String url = String.format("http://%s:%s", inetAddress.getHostAddress(), this.port);
                         if (StrUtil.isNotBlank(this.contextPath)) {
                             url = url + this.contextPath;

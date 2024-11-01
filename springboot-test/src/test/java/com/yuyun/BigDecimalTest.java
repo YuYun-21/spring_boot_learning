@@ -13,6 +13,18 @@ import java.math.RoundingMode;
 public class BigDecimalTest {
 
     @Test
+    void test1() {
+        long l = -2;
+        BigDecimal ten = BigDecimal.TEN;
+        BigDecimal bigDecimal = new BigDecimal("3");
+        BigDecimal multiplicand = new BigDecimal(l);
+        System.out.println("multiplicand = " + multiplicand);
+        BigDecimal multiply = bigDecimal.multiply(multiplicand);
+        System.out.println("multiply = " + multiply);
+        BigDecimal subtract = ten.add(multiply);
+        System.out.println("subtract = " + subtract);
+    }
+    @Test
     void test() {
         BigDecimal decimal = BigDecimal.valueOf(8118);
         BigDecimal multiply = decimal.divide(new BigDecimal("3600"), 2, RoundingMode.DOWN);

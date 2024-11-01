@@ -6,11 +6,19 @@ import cn.hutool.core.codec.Base62;
 import cn.hutool.core.codec.Base64;
 import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.core.util.HexUtil;
+import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.crypto.Mode;
+import cn.hutool.crypto.Padding;
+import cn.hutool.crypto.SecureUtil;
 import cn.hutool.crypto.asymmetric.KeyType;
 import cn.hutool.crypto.asymmetric.RSA;
+import cn.hutool.crypto.symmetric.AES;
+import cn.hutool.crypto.symmetric.SymmetricAlgorithm;
+import cn.hutool.crypto.symmetric.SymmetricCrypto;
 import org.junit.jupiter.api.Test;
 
+import javax.crypto.SecretKey;
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
@@ -23,6 +31,57 @@ import java.util.Arrays;
  */
 public class EncryptDecryptTest {
 
+    @Test
+    void aes() {
+        String randomString = RandomUtil.randomString(16);
+        System.out.println("randomString = " + randomString);
+        String content = "test中文";
+        System.out.println("RandomUtil.randomString(15) = " + RandomUtil.randomString(20));
+
+
+//构建
+        SymmetricCrypto aes = new SymmetricCrypto(SymmetricAlgorithm.AES, "zo06a30m4fwfaiyq".getBytes());
+
+//加密
+        byte[] encrypt = aes.encrypt(content);
+        System.out.println("encrypt = " + Base64.encode(encrypt));
+
+//解密
+        byte[] decrypt = aes.decrypt(encrypt);
+        System.out.println("decrypt = " + StrUtil.str(decrypt, CharsetUtil.CHARSET_UTF_8));
+//加密为16进制表示
+        String encryptHex = aes.encryptHex(content);
+        System.out.println("encryptHex = " + encryptHex);
+//解密为字符串
+        String decryptStr = aes.decryptStr(encryptHex, CharsetUtil.CHARSET_UTF_8);
+        System.out.println("decryptStr = " + decryptStr);
+
+        String encryptBase64 = aes.encryptBase64("哈哈哈");
+        System.out.println("encryptBase64 = " + encryptBase64);
+        String decryptedStr = aes.decryptStr(encryptBase64);
+        System.out.println("decryptedStr = " + decryptedStr);
+
+        AES aes1 = new AES(Mode.CBC, Padding.PKCS5Padding, "zo06a30m4fwfaiyq".getBytes(), "2512356897452465".getBytes());
+        String encryptBase641 = aes1.encryptBase64(content);
+        System.out.println("encryptBase641 = " + encryptBase641);
+        String decryptedStr1 = aes1.decryptStr(encryptBase641);
+        System.out.println("decryptedStr1 = " + decryptedStr1);
+
+        // 加密为16进制表示
+        String encryptHex1 = aes1.encryptHex(content);
+        // 解密
+        String decryptStr1 = aes1.decryptStr(encryptHex1);
+        System.out.println("encryptHex1 = " + encryptHex1);
+        System.out.println("decryptStr1 = " + decryptStr1);
+    }
+    @Test
+    void rsa5() {
+        RSA rsa = new RSA();
+        System.out.println("rsa.getPublicKeyBase64() = " + rsa.getPublicKeyBase64());
+        System.out.println("rsa.getPrivateKeyBase64() = " + rsa.getPrivateKeyBase64());
+        System.out.println("rsa.getPrivateKey() = " + rsa.getPrivateKey());
+        System.out.println("rsa.getPublicKey() = " + rsa.getPublicKey());
+    }
     @Test
     void rsa4() {
         String psw = "M9iyVTjRrHnrXCJB/p/ZsM+OaBvBHDjZE+kP7agtNhaMuenyKzffpMSvDJKPAp096eH26ScEs1HAVvoOmTDtCtCbz1" +
@@ -40,16 +99,8 @@ public class EncryptDecryptTest {
 
     @Test
     void rsa3() {
-        String PRIVATE_KEY = "MIICdQIBADANBgkqhkiG9w0BAQEFAASCAl8wggJbAgEAAoGBAI0e1e9sysjRhiSO7uS1rBiijfsWe/0chfMOaVduUR50u" +
-                "3XuPr9xWQX0tRfX0r+pygR1uEJwazgurut5G7t+uNPJ7Ns1k7w2eVY2CbZ9I2W17FWB9XtJzzXbrnurlDTWZ6oyPGSPn65Yed+dapKS29s" +
-                "TPwksMBKMnM/tcScqp3xNAgMBAAECgYByF6ENHl7gdw1F101rGToW/K1fd/EsVPgy5s7iAe2RevzoPoL6knBP8WTL7xCTJnmOm4IqLOtyk" +
-                "8OV2udB8hUI53XKs9tz/aGxxinIQlYGhf7fU0PjISAG7lNvRRU3UIizW7RmhEJpcCGEoPjak1xqUEkDS0JY34UwQDuuUuywfQJBANi5fS+" +
-                "Qf1OH+7ocFAfiCPyDVordM4sD+cYIx4HDjHJL7o03x8PyOHpVELn9OyW7Uz+DenO0Y3c2A9g0E2JHMc8CQQCmsdeWTmrm3haMW5HdqzA+ro" +
-                "8knKYDgymALS67isgqISyAwiOMosKOcVEniQTTMFw+OTCNYyw8bPzOoqh2FcMjAkBryQS7rS/GCXFmhCRqLz6s510ZPx4tW1LT7PXcUbb9+" +
-                "UmxLjbJ+yOfo8Ln3UuXXmzuv6Mc/HAjj9elpXCmhiX9AkA1T+uDRtEpxR2xBhhArN9hLLLbIr51oR1EwS6RDHG4B6QUCgMUl3lh1Rv/aPMCGB" +
-                "VoUSIWFgGv0auI6ry2B3/BAkBYTz1xHggEWogBti8WwzHC+Tozo4Vx/NmXhtMvMIfdeBuh0ANEOnC37KGE7g9EYf+Giblvh8pcRoKihV0gwB8/";
-        String PUBLIC_KEY = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCNHtXvbMrI0YYkju7ktawYoo37Fnv9HIXzDmlXblEedLt17j6/cVkF9LUX1" +
-                "9K/qcoEdbhCcGs4Lq7reRu7frjTyezbNZO8NnlWNgm2fSNltexVgfV7Sc812657q5Q01meqMjxkj5+uWHnfnWqSktvbEz8JLDASjJzP7XEnKqd8TQIDAQAB";
+        String PRIVATE_KEY = "MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBAJs7xAttWCc4gTAFfg5A1gGCIoAtrW0SeFWbiNLkPIvXlAQHq3wrNkn2hVOUTGZwDd0KV7b7R+Qy7nNu3Mgt6h8aJqCprdY9ebSkls2ye2uile3fXK66znSvspciYzZAJKlH+PQKEus7wXKNRJV0HbT9GmX2I1rmgbsZKYGo9nZXAgMBAAECgYA8PdhZuuhf6ByyXx9JNr4WPcNXzOIllupeBor1lJ8ugc2uNq/E8xwRXfrlsYJoqommwzHBEAkZNO62m0pQ4QieyBJgHAxWvPtw03+kJ7bpudKWLzjLsZze328e8YpcSVNhi7DStenFsPQA/k2dBl6F6ksU3lusBEdyHiYtfV6woQJBANgvsrLSHv0Ymw4qORXjtuzujhFGZUj4dZw2qf/8tmYwR90oyN2OOkezSSeD8tFbWzNfsfcJ/E13kQ2XC5e3n8cCQQC30mOtjjuFaGZEt2mBxujP5uN0rImzIuIS6RCCLqMA+4dIlhDLYTvfUCSFyQ6UgsDFisI8Judw5KfUbe/BdpTxAkAyC2CfmpqH1mFWdxm94nffAx4qC5S4vqNjJRhXZOXIZBbOsHlHKHx/SpZ9qkLUigRjsRxeZpZcTHhsn/GUDnLTAkANM9Qq6/NEcqodt1qhkoq4G+osQBQnxJKeLxUbdIQKlwYxZW3RXatyL4xf+3/LlNSJm5y1u0mWJyYSsM6ug3jRAkEAzy9HT71xpfXZkCuG0Qw1HGV2qHCI/fCcdvb54EczgOjTNsZKJVr+xlqx80d6daEs2Gj9kFO+IIpDFK58Z8p6Cw==";
+        String PUBLIC_KEY = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCbO8QLbVgnOIEwBX4OQNYBgiKALa1tEnhVm4jS5DyL15QEB6t8KzZJ9oVTlExmcA3dCle2+0fkMu5zbtzILeofGiagqa3WPXm0pJbNsntropXt31yuus50r7KXImM2QCSpR/j0ChLrO8FyjUSVdB20/Rpl9iNa5oG7GSmBqPZ2VwIDAQAB";
 
         RSA rsa = new RSA(PRIVATE_KEY, PUBLIC_KEY);
         // 公钥加密，私钥解密
@@ -69,8 +120,8 @@ public class EncryptDecryptTest {
     @Test
     void rsa2() {
 
-        String PRIVATE_KEY = "MIICdQIBADANBgkqhkiG9w0BAQEFAASCAl8wggJbAgEAAoGBAI0e1e9sysjRhiSO7uS1rBiijfsWe/0chfMOaVduUR50u3XuPr9xWQX0tRfX0r+pygR1uEJwazgurut5G7t+uNPJ7Ns1k7w2eVY2CbZ9I2W17FWB9XtJzzXbrnurlDTWZ6oyPGSPn65Yed+dapKS29sTPwksMBKMnM/tcScqp3xNAgMBAAECgYByF6ENHl7gdw1F101rGToW/K1fd/EsVPgy5s7iAe2RevzoPoL6knBP8WTL7xCTJnmOm4IqLOtyk8OV2udB8hUI53XKs9tz/aGxxinIQlYGhf7fU0PjISAG7lNvRRU3UIizW7RmhEJpcCGEoPjak1xqUEkDS0JY34UwQDuuUuywfQJBANi5fS+Qf1OH+7ocFAfiCPyDVordM4sD+cYIx4HDjHJL7o03x8PyOHpVELn9OyW7Uz+DenO0Y3c2A9g0E2JHMc8CQQCmsdeWTmrm3haMW5HdqzA+ro8knKYDgymALS67isgqISyAwiOMosKOcVEniQTTMFw+OTCNYyw8bPzOoqh2FcMjAkBryQS7rS/GCXFmhCRqLz6s510ZPx4tW1LT7PXcUbb9+UmxLjbJ+yOfo8Ln3UuXXmzuv6Mc/HAjj9elpXCmhiX9AkA1T+uDRtEpxR2xBhhArN9hLLLbIr51oR1EwS6RDHG4B6QUCgMUl3lh1Rv/aPMCGBVoUSIWFgGv0auI6ry2B3/BAkBYTz1xHggEWogBti8WwzHC+Tozo4Vx/NmXhtMvMIfdeBuh0ANEOnC37KGE7g9EYf+Giblvh8pcRoKihV0gwB8/";
-        String PUBLIC_KEY = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCNHtXvbMrI0YYkju7ktawYoo37Fnv9HIXzDmlXblEedLt17j6/cVkF9LUX19K/qcoEdbhCcGs4Lq7reRu7frjTyezbNZO8NnlWNgm2fSNltexVgfV7Sc812657q5Q01meqMjxkj5+uWHnfnWqSktvbEz8JLDASjJzP7XEnKqd8TQIDAQAB";
+        String PRIVATE_KEY = "MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBAJs7xAttWCc4gTAFfg5A1gGCIoAtrW0SeFWbiNLkPIvXlAQHq3wrNkn2hVOUTGZwDd0KV7b7R+Qy7nNu3Mgt6h8aJqCprdY9ebSkls2ye2uile3fXK66znSvspciYzZAJKlH+PQKEus7wXKNRJV0HbT9GmX2I1rmgbsZKYGo9nZXAgMBAAECgYA8PdhZuuhf6ByyXx9JNr4WPcNXzOIllupeBor1lJ8ugc2uNq/E8xwRXfrlsYJoqommwzHBEAkZNO62m0pQ4QieyBJgHAxWvPtw03+kJ7bpudKWLzjLsZze328e8YpcSVNhi7DStenFsPQA/k2dBl6F6ksU3lusBEdyHiYtfV6woQJBANgvsrLSHv0Ymw4qORXjtuzujhFGZUj4dZw2qf/8tmYwR90oyN2OOkezSSeD8tFbWzNfsfcJ/E13kQ2XC5e3n8cCQQC30mOtjjuFaGZEt2mBxujP5uN0rImzIuIS6RCCLqMA+4dIlhDLYTvfUCSFyQ6UgsDFisI8Judw5KfUbe/BdpTxAkAyC2CfmpqH1mFWdxm94nffAx4qC5S4vqNjJRhXZOXIZBbOsHlHKHx/SpZ9qkLUigRjsRxeZpZcTHhsn/GUDnLTAkANM9Qq6/NEcqodt1qhkoq4G+osQBQnxJKeLxUbdIQKlwYxZW3RXatyL4xf+3/LlNSJm5y1u0mWJyYSsM6ug3jRAkEAzy9HT71xpfXZkCuG0Qw1HGV2qHCI/fCcdvb54EczgOjTNsZKJVr+xlqx80d6daEs2Gj9kFO+IIpDFK58Z8p6Cw==";
+        String PUBLIC_KEY = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCbO8QLbVgnOIEwBX4OQNYBgiKALa1tEnhVm4jS5DyL15QEB6t8KzZJ9oVTlExmcA3dCle2+0fkMu5zbtzILeofGiagqa3WPXm0pJbNsntropXt31yuus50r7KXImM2QCSpR/j0ChLrO8FyjUSVdB20/Rpl9iNa5oG7GSmBqPZ2VwIDAQAB";
         // 私钥和公钥都是动生成的，是互相关联的
         RSA rsa = new RSA(PRIVATE_KEY, null);
         // 一般来说 私钥和公钥都是动生成的，但是可以根据私钥生成对应的公钥
