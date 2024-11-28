@@ -8,7 +8,7 @@ import java.util.Objects;
 
 /**
  * 合并列单元格处理程序
- *
+ * <br> 从 起始行 开始，经过多少行结束，合并多少列
  * @author hyh
  * @date 2024/02/21
  */

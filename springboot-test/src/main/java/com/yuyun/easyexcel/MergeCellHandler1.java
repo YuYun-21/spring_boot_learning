@@ -11,7 +11,7 @@ import java.util.List;
 
 /**
  * 合并行相同值单元格处理程序
- * 合并某一行多列 从startColIndex开始，每经过cellList中的值合并一次
+ * <br> 合并某一行多列 从startColIndex开始，每经过cellList中的值合并一次
  *
  * @author hyh
  * @date 2024/01/05

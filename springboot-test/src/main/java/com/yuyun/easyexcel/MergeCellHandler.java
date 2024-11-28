@@ -10,7 +10,7 @@ import java.util.Objects;
 
 /**
  * 合并行相同值单元格处理程序
- * 该方法不可用 如果数据列表是横向输出 relativeRowIndex定位不到数据行
+ * <br> 该方法不可用 如果数据列表是横向输出 relativeRowIndex定位不到数据行
  *
  * @author hyh
  * @date 2024/01/05
