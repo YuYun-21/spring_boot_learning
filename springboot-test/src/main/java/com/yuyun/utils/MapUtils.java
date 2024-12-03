@@ -11,6 +11,17 @@ import java.util.stream.Collectors;
  * @since 2023-11-14
  */
 public class MapUtils {
+    public static void main(String[] args) {
+        MapUtils test = new MapUtils();
+        Map<String, Map<String, String>> map = test.getMap();
+        Map<String, Map<String, String>> reversalMap = test.getReversalMap();
+        Map<String, Map<String, String>> swappedMap = test.getSwappedMap();
+
+        System.out.println("map = " + JSON.toJSONString(map));
+        System.out.println("reversalMap = " + JSON.toJSONString(reversalMap));
+        System.out.println("swappedMap = " + JSON.toJSONString(swappedMap));
+    }
+
     /**
      * 原来的map
      *
@@ -68,17 +79,5 @@ public class MapUtils {
         }
 
         return swappedMap;
-    }
-
-
-    public static void main(String[] args) {
-        MapUtils test = new MapUtils();
-        Map<String, Map<String, String>> map = test.getMap();
-        Map<String, Map<String, String>> reversalMap = test.getReversalMap();
-        Map<String, Map<String, String>> swappedMap = test.getSwappedMap();
-
-        System.out.println("map = " + JSON.toJSONString(map));
-        System.out.println("reversalMap = " + JSON.toJSONString(reversalMap));
-        System.out.println("swappedMap = " + JSON.toJSONString(swappedMap));
     }
 }

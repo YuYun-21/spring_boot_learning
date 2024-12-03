@@ -23,6 +23,12 @@ import java.util.stream.Collectors;
  */
 public class TestDemo {
 
+    public static List<Long> getCompanyIdsPerPage(List<Long> companyIds, int page, int limit) {
+        int startIndex = (page - 1) * limit;
+        int endIndex = Math.min(startIndex + limit, companyIds.size());
+        return companyIds.subList(startIndex, endIndex);
+    }
+
     /**
      * 计算公式字符串计算
      */
@@ -51,12 +57,6 @@ public class TestDemo {
 
         List<Long> result = getCompanyIdsPerPage(companyIds, page, limit);
         System.out.println("Page " + page + ": " + result);
-    }
-
-    public static List<Long> getCompanyIdsPerPage(List<Long> companyIds, int page, int limit) {
-        int startIndex = (page - 1) * limit;
-        int endIndex = Math.min(startIndex + limit, companyIds.size());
-        return companyIds.subList(startIndex, endIndex);
     }
 
     @Test

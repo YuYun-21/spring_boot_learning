@@ -7,21 +7,19 @@ import cn.afterturn.easypoi.excel.annotation.Excel;
  */
 public class CompanyHasImgModel {
 
+    @Excel(name = "公司名称")
+    private String companyName;
+    @Excel(name = "公司LOGO", type = 2, width = 40, height = 30, imageType = 1)
+    private String companyLogo;
+    @Excel(name = "公司地址", width = 60)
+    private String companyAddr;
     public CompanyHasImgModel() {
     }
-
     public CompanyHasImgModel(String companyName, String companyLogo, String companyAddr) {
         this.companyName = companyName;
         this.companyLogo = companyLogo;
         this.companyAddr = companyAddr;
     }
-
-    @Excel(name = "公司名称")
-    private String companyName;
-    @Excel(name = "公司LOGO", type = 2 ,width = 40 , height = 30,imageType = 1)
-    private String companyLogo;
-    @Excel(name = "公司地址" ,width = 60)
-    private String companyAddr;
 
     public String getCompanyName() {
         return companyName;

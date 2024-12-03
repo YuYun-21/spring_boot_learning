@@ -40,6 +40,7 @@ public class HuToolTest {
 
         System.out.println("IdcardUtil.isValidCard(sfz) = " + IdcardUtil.isValidCard(sfz));
     }
+
     @Test
     void dateTest() {
         String dateStr1 = "2017-04-01 22:33:23";
@@ -48,11 +49,11 @@ public class HuToolTest {
         String dateStr2 = "2017-05-01 23:33:23";
         Date date2 = DateUtil.parse(dateStr2);
 
-        //相差一个月，31天
+        // 相差一个月，31天
         long betweenDay = DateUtil.between(date1, date2, DateUnit.DAY);
         System.out.println("betweenDay = " + betweenDay);
 
-        //相差一个月，31天
+        // 相差一个月，31天
         long betweenDays = DateUtil.between(date1, date2, DateUnit.SECOND);
         System.out.println("betweenDay = " + betweenDays);
 
@@ -102,7 +103,7 @@ public class HuToolTest {
 
     @Test
     void test7() {
-        //配置
+        // 配置
         TreeNodeConfig treeNodeConfig = new TreeNodeConfig();
         // 自定义属性名 都要默认值的
         treeNodeConfig.setWeightKey("order");
@@ -116,7 +117,7 @@ public class HuToolTest {
         list.add(DeptDto.builder().id(102L).pid(1L).name("曲靖市").build());
         list.add(DeptDto.builder().id(1011L).pid(101L).name("五华区").build());
 
-        //转换器
+        // 转换器
         List<Tree<Long>> treeNodes = TreeUtil.build(list, list.get(0).getId(), treeNodeConfig,
                 (treeNode, tree) -> {
                     tree.setId(treeNode.getId());
@@ -145,7 +146,7 @@ public class HuToolTest {
     @Test
     void test5() {
         String html = "<p style=\"margin-top:5.0000pt\">&nbsp;</p><p style=\"margin-right:0.0000pt;\"align=\"center\"><span style=\"font-family:方正仿宋_GBK;\">&nbsp;&nbsp;&nbsp;云南省人民政府研究室</span></p><p style=\"margin-top:5.0000pt;\"align=\"justify\"><span style=\"font-family:'Times New Roman';\">2023年3月29日</span></p><p style=\"margin: 0pt; \"align=\"justify\"><span style=\"font-size: 21.3333px;\">附件：<img border=\"0\"src=\"/edittest/ewebeditor/sysimage/icon16/xls.gif\"><a href=\"/edittest/ewebeditor/uploadfile/20230330101140745.xls\"target=\"_blank\">人员名单.xls</a></span></p><p style=\"margin:0pt;\">&nbsp;</p>";
-        //String regex = "(?<=云南省人民政府研究室).*?(<p.*?></p>){0,1}<p.*?>(.*?\\d{4}年\\d{1,2}月\\d{1,2}日.*?)</p>";
+        // String regex = "(?<=云南省人民政府研究室).*?(<p.*?></p>){0,1}<p.*?>(.*?\\d{4}年\\d{1,2}月\\d{1,2}日.*?)</p>";
         String regex = ".*云南省人民政府研究室(?:&nbsp;|&ensp;|\\s)*\\d{4}年\\d{1,2}月\\d{1,2}日.*";
 
         String s = HtmlUtil.cleanHtmlTag(html);

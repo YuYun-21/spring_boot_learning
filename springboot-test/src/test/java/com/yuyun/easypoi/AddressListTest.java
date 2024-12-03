@@ -139,7 +139,7 @@ public class AddressListTest {
                     params
             );
 
-            //失败的数据
+            // 失败的数据
             System.out.println("result.getFailList() = " + JSON.toJSONString(result.getFailList()));
             if (result.getFailList().size() > 0) {
                 StringBuilder sb = new StringBuilder();

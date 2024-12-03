@@ -51,11 +51,11 @@ public class TestFileUtil {
      * build to test file path
      **/
     public static class TestPathBuild {
+        private final List<String> subPath;
+
         private TestPathBuild() {
             subPath = new ArrayList<>();
         }
-
-        private final List<String> subPath;
 
         public TestPathBuild sub(String dirOrFile) {
             subPath.add(dirOrFile);

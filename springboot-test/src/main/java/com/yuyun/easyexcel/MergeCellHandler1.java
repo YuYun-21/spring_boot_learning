@@ -23,13 +23,13 @@ public class MergeCellHandler1 implements SheetWriteHandler {
      */
     private final int rowIndex;
     /**
-     * 起始列
-     */
-    private int startColIndex;
-    /**
      * 每次需要合并的列数
      */
     private final List<Integer> colIndexList;
+    /**
+     * 起始列
+     */
+    private int startColIndex;
 
     public MergeCellHandler1(int rowIndex, int startColIndex, List<Integer> colIndexList) {
         if (rowIndex >= 0 && startColIndex >= 0 && CollUtil.isNotEmpty(colIndexList)) {

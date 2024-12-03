@@ -1,7 +1,6 @@
 package com.yuyun.easypoi.entity;
 
 import cn.afterturn.easypoi.excel.annotation.Excel;
-import cn.afterturn.easypoi.excel.annotation.ExcelIgnore;
 import cn.afterturn.easypoi.handler.inter.IExcelDataModel;
 import cn.afterturn.easypoi.handler.inter.IExcelModel;
 import com.fasterxml.jackson.annotation.JsonFormat;

@@ -41,12 +41,12 @@ public class ListTest {
         BigDecimal bigDouble1 = new BigDecimal(g);
         BigDecimal bigDouble2 = new BigDecimal(i);
         BigDecimal douDifference = new BigDecimal(0);
-        //BigDecimal求差
+        // BigDecimal求差
         douDifference = bigDouble1.subtract(bigDouble2);
         System.out.println("差 :" + douDifference);
         System.out.println("差 :" + douDifference.doubleValue());
         System.out.println("差 :" + BigDecimal.valueOf(douDifference.doubleValue()));
-        //打印输出
+        // 打印输出
 
     }
 
@@ -133,8 +133,8 @@ public class ListTest {
         List<Integer> list = new ArrayList<>(Arrays.asList(1, 9, 3, 2, 1, 3, 7, 2, 1));
         System.out.println("原集合:" + list);
 
-        //Iterator<Integer> iterator = list.iterator();
-        //while (iterator.hasNext()) {
+        // Iterator<Integer> iterator = list.iterator();
+        // while (iterator.hasNext()) {
         //    // 获取循环的值
         //    Integer item = iterator.next();
         //    // 如果存在两个相同的值
@@ -143,13 +143,13 @@ public class ListTest {
         //        iterator.remove();
         //    }
         //}
-        //System.out.println("去重后:" + list);
+        // System.out.println("去重后:" + list);
 
-        //HashSet<Integer> set = new HashSet<>(list);
-        //System.out.println("去重后:" + set);
+        // HashSet<Integer> set = new HashSet<>(list);
+        // System.out.println("去重后:" + set);
 
-        //LinkedHashSet<Integer> set = new LinkedHashSet<>(list);
-        //System.out.println("去重后:" + set);
+        // LinkedHashSet<Integer> set = new LinkedHashSet<>(list);
+        // System.out.println("去重后:" + set);
 
         TreeSet<Integer> set = new TreeSet<>(list);
         System.out.println("去重集合:" + set);

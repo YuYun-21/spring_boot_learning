@@ -24,6 +24,7 @@ public class BigDecimalTest {
         BigDecimal subtract = ten.add(multiply);
         System.out.println("subtract = " + subtract);
     }
+
     @Test
     void test() {
         BigDecimal decimal = BigDecimal.valueOf(8118);

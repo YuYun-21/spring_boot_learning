@@ -1,32 +1,32 @@
-//package com.yuyun.config;
+// package com.yuyun.config;
 //
-//import org.apache.http.client.HttpClient;
-//import org.apache.http.conn.HttpClientConnectionManager;
-//import org.apache.http.conn.ssl.NoopHostnameVerifier;
-//import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
-//import org.apache.http.impl.client.CloseableHttpClient;
-//import org.apache.http.impl.client.DefaultHttpRequestRetryHandler;
-//import org.apache.http.impl.client.HttpClientBuilder;
-//import org.apache.http.impl.client.HttpClients;
-//import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
-//import org.apache.http.ssl.SSLContexts;
-//import org.apache.http.ssl.TrustStrategy;
-//import org.springframework.context.annotation.Bean;
-//import org.springframework.context.annotation.Configuration;
-//import org.springframework.http.client.ClientHttpRequestFactory;
-//import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
-//import org.springframework.web.client.RestTemplate;
+// import org.apache.http.client.HttpClient;
+// import org.apache.http.conn.HttpClientConnectionManager;
+// import org.apache.http.conn.ssl.NoopHostnameVerifier;
+// import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+// import org.apache.http.impl.client.CloseableHttpClient;
+// import org.apache.http.impl.client.DefaultHttpRequestRetryHandler;
+// import org.apache.http.impl.client.HttpClientBuilder;
+// import org.apache.http.impl.client.HttpClients;
+// import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
+// import org.apache.http.ssl.SSLContexts;
+// import org.apache.http.ssl.TrustStrategy;
+// import org.springframework.context.annotation.Bean;
+// import org.springframework.context.annotation.Configuration;
+// import org.springframework.http.client.ClientHttpRequestFactory;
+// import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+// import org.springframework.web.client.RestTemplate;
 //
-//import javax.net.ssl.SSLContext;
-//import java.security.KeyManagementException;
-//import java.security.KeyStoreException;
-//import java.security.NoSuchAlgorithmException;
+// import javax.net.ssl.SSLContext;
+// import java.security.KeyManagementException;
+// import java.security.KeyStoreException;
+// import java.security.NoSuchAlgorithmException;
 //
-///**
+/// **
 // * @author
 // */
 //@Configuration
-//public class RestTemplateConfig {
+// public class RestTemplateConfig {
 //
 //    @Bean
 //    public RestTemplate restTemplate(ClientHttpRequestFactory simpleClientHttpRequestFactory) {

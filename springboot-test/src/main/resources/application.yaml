@@ -1,2 +1,9 @@
 server:
   port: 1532
+
+websocket:
+  enabled: true
+  # 路径
+  path: /resource/websocket
+  allowedOrigins: '*'
+  # 连接地址 ws://后端ip:端口/context-path/resource/websocket?clientid=import.meta.env.VITE_APP_CLIENT_ID&Authorization=Bearer eyJ0eXAiO......

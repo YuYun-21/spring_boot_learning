@@ -17,7 +17,7 @@ public class SysParamsServiceImpl implements SysParamsService {
 
         String paramValue = getValue(paramCode);
 
-        if(StrUtil.isNotBlank(paramValue)){
+        if (StrUtil.isNotBlank(paramValue)) {
             return JSON.parseObject(paramValue, clazz);
         }
 

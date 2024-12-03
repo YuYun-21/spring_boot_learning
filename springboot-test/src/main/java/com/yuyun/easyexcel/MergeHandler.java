@@ -21,13 +21,13 @@ public class MergeHandler implements RowWriteHandler {
      */
     private final int columnIndex;
     /**
-     * 起始行
-     */
-    private int rowIndex;
-    /**
      * 每次需要合并的行数
      */
     private final List<Integer> rowList;
+    /**
+     * 起始行
+     */
+    private int rowIndex;
     /**
      * rowList下标idx
      */

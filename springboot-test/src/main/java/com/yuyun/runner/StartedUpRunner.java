@@ -14,7 +14,6 @@ import java.net.InetAddress;
 import java.net.InterfaceAddress;
 import java.net.NetworkInterface;
 import java.util.Enumeration;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -31,13 +30,17 @@ public class StartedUpRunner implements ApplicationRunner {
     @Value("${server.servlet.context-path:}")
     private String contextPath;
 
+    public StartedUpRunner(ConfigurableApplicationContext context) {
+        this.context = context;
+    }
+
     @Override
     public void run(ApplicationArguments args) throws Exception {
         if (this.context.isActive()) {
             log.info("==> 系统启动完毕");
             Enumeration<NetworkInterface> networkInterfaces = NetworkInterface.getNetworkInterfaces();
 
-            while(true) {
+            while (true) {
                 NetworkInterface networkInterface;
                 do {
                     do {
@@ -45,12 +48,12 @@ public class StartedUpRunner implements ApplicationRunner {
                             return;
                         }
 
-                        networkInterface = (NetworkInterface)networkInterfaces.nextElement();
-                    } while(networkInterface.isLoopback());
-                } while(networkInterface.isVirtual());
+                        networkInterface = (NetworkInterface) networkInterfaces.nextElement();
+                    } while (networkInterface.isLoopback());
+                } while (networkInterface.isVirtual());
 
                 List<InterfaceAddress> interfaceAddresses = networkInterface.getInterfaceAddresses();
-                interfaceAddresses.forEach(interfaceAddress->{
+                interfaceAddresses.forEach(interfaceAddress -> {
                     InetAddress inetAddress = interfaceAddress.getAddress();
                     if (inetAddress instanceof Inet4Address) {
                         String hostName = inetAddress.getHostName();
@@ -69,10 +72,6 @@ public class StartedUpRunner implements ApplicationRunner {
                 });
             }
         }
-    }
-
-    public StartedUpRunner(ConfigurableApplicationContext context) {
-        this.context = context;
     }
 
 }

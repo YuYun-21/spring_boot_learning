@@ -20,7 +20,7 @@ public class SmsFactory {
     }
 
     public static AbstractSmsService build() {
-        //获取配置信息
+        // 获取配置信息
         MasMsgConfig config = sysParamsService.getValueObject("SMS_MAS_CONFIG_KEY", MasMsgConfig.class);
         return new MasSmsService(config);
     }

@@ -1,6 +1,9 @@
 package com.yuyun.easypoi.entity;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -60,7 +63,7 @@ public class MapMain {
         }
     }
 
-    //private static Map<String, String> generateCombinations(Map<String, String> inputMap) {
+    // private static Map<String, String> generateCombinations(Map<String, String> inputMap) {
     //    List<String> keys = new ArrayList<>(inputMap.keySet());
     //
     //    List<String> keyCombinations = IntStream.rangeClosed(1, keys.size())
@@ -80,7 +83,7 @@ public class MapMain {
     //            ));
     //}
     //
-    //private static <T> List<List<T>> combinations(List<T> list, int size) {
+    // private static <T> List<List<T>> combinations(List<T> list, int size) {
     //    if (size == 0) {
     //        return Collections.singletonList(Collections.emptyList());
     //    }

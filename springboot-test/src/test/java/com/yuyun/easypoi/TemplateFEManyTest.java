@@ -1,7 +1,11 @@
 package com.yuyun.easypoi;
 
+import cn.afterturn.easypoi.excel.ExcelExportUtil;
 import cn.afterturn.easypoi.excel.entity.ExportParams;
+import cn.afterturn.easypoi.excel.entity.TemplateExportParams;
+import cn.afterturn.easypoi.util.PoiMergeCellUtil;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -9,11 +13,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import cn.afterturn.easypoi.excel.ExcelExportUtil;
-import cn.afterturn.easypoi.excel.entity.TemplateExportParams;
-import cn.afterturn.easypoi.util.PoiMergeCellUtil;
-import org.junit.jupiter.api.Test;
 
 /**
  * Created by JueYue on 2017/8/25.
@@ -27,20 +26,20 @@ public class TemplateFEManyTest {
         if (!savefile.exists()) {
             savefile.mkdirs();
         }
-        List<CompanyHasImgModel> list= new ArrayList<CompanyHasImgModel>();
+        List<CompanyHasImgModel> list = new ArrayList<CompanyHasImgModel>();
         list.add(new CompanyHasImgModel("百度", "http://y3.ifengimg.com/a/2016_03/6154e935f8a0fc6.jpg", "北京市海淀区西北旺东路10号院百度科技园1号楼"));
         list.add(new CompanyHasImgModel("阿里巴巴", "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1561861328&di=a515b18b702e027878df86bdbe1d1a3f&imgtype=jpg&er=1&src=http%3A%2F%2Fimg1.gtimg.com%2Fhb%2Fpics%2Fhv1%2F125%2F206%2F1609%2F104677880.jpg", "北京市海淀区西北旺东路10号院百度科技园1号楼"));
         list.add(new CompanyHasImgModel("Lemur", "imgs/company/lemur.png", "亚马逊热带雨林"));
         list.add(new CompanyHasImgModel("一众", "imgs/company/one.png", "山东济宁俺家"));
 
         Workbook workbook = ExcelExportUtil.exportExcel(new ExportParams(), CompanyHasImgModel.class, list);
-        FileOutputStream fos  = new FileOutputStream("/Users/wizdom-lcr/Downloads/ExcelExportUrlImgTest.exportCompanyUrlImg.xls");
+        FileOutputStream fos = new FileOutputStream("/Users/wizdom-lcr/Downloads/ExcelExportUrlImgTest.exportCompanyUrlImg.xls");
         workbook.write(fos);
         fos.close();
     }
 
     @Test
-    public void test()  throws Exception {
+    public void test() throws Exception {
         List<Map<String, String>> onelist = new ArrayList<Map<String, String>>();
         for (int i = 0; i < 30; i++) {
             onelist.add(getMap("第一组", i));
@@ -58,7 +57,7 @@ public class TemplateFEManyTest {
         for (int i = 0; i < 10; i++) {
             fourlist.add(getMap("第四组", i));
         }
-        Map<String,Object> map = new HashMap<String,Object>();
+        Map<String, Object> map = new HashMap<String, Object>();
         map.put("onelist", onelist);
         map.put("twolist", twolist);
         map.put("threelist", threelist);

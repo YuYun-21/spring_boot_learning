@@ -18,6 +18,7 @@ public class MasUtil {
 
     /**
      * 生成MD5码
+     *
      * @param plainText 要加密的字符串
      * @return md5值
      */
@@ -43,8 +44,9 @@ public class MasUtil {
 
     /**
      * 先进行HmacSHA1转码再进行Base64编码
-     * @param data  要SHA1的串
-     * @param key   秘钥
+     *
+     * @param data 要SHA1的串
+     * @param key  秘钥
      * @return
      * @throws Exception
      */
@@ -58,8 +60,9 @@ public class MasUtil {
 
     /**
      * 校验MD5码
+     *
      * @param text 要校验的字符串
-     * @param md5 md5值
+     * @param md5  md5值
      * @return 校验结果
      */
     public static boolean valid(String text, String md5) {

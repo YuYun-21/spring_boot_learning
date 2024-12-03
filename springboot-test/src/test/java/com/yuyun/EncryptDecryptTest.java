@@ -10,7 +10,6 @@ import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.Mode;
 import cn.hutool.crypto.Padding;
-import cn.hutool.crypto.SecureUtil;
 import cn.hutool.crypto.asymmetric.KeyType;
 import cn.hutool.crypto.asymmetric.RSA;
 import cn.hutool.crypto.symmetric.AES;
@@ -18,7 +17,6 @@ import cn.hutool.crypto.symmetric.SymmetricAlgorithm;
 import cn.hutool.crypto.symmetric.SymmetricCrypto;
 import org.junit.jupiter.api.Test;
 
-import javax.crypto.SecretKey;
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
@@ -39,20 +37,20 @@ public class EncryptDecryptTest {
         System.out.println("RandomUtil.randomString(15) = " + RandomUtil.randomString(20));
 
 
-//构建
+// 构建
         SymmetricCrypto aes = new SymmetricCrypto(SymmetricAlgorithm.AES, "zo06a30m4fwfaiyq".getBytes());
 
-//加密
+// 加密
         byte[] encrypt = aes.encrypt(content);
         System.out.println("encrypt = " + Base64.encode(encrypt));
 
-//解密
+// 解密
         byte[] decrypt = aes.decrypt(encrypt);
         System.out.println("decrypt = " + StrUtil.str(decrypt, CharsetUtil.CHARSET_UTF_8));
-//加密为16进制表示
+// 加密为16进制表示
         String encryptHex = aes.encryptHex(content);
         System.out.println("encryptHex = " + encryptHex);
-//解密为字符串
+// 解密为字符串
         String decryptStr = aes.decryptStr(encryptHex, CharsetUtil.CHARSET_UTF_8);
         System.out.println("decryptStr = " + decryptStr);
 
@@ -74,6 +72,7 @@ public class EncryptDecryptTest {
         System.out.println("encryptHex1 = " + encryptHex1);
         System.out.println("decryptStr1 = " + decryptStr1);
     }
+
     @Test
     void rsa5() {
         RSA rsa = new RSA();
@@ -82,6 +81,7 @@ public class EncryptDecryptTest {
         System.out.println("rsa.getPrivateKey() = " + rsa.getPrivateKey());
         System.out.println("rsa.getPublicKey() = " + rsa.getPublicKey());
     }
+
     @Test
     void rsa4() {
         String psw = "M9iyVTjRrHnrXCJB/p/ZsM+OaBvBHDjZE+kP7agtNhaMuenyKzffpMSvDJKPAp096eH26ScEs1HAVvoOmTDtCtCbz1" +
@@ -204,34 +204,34 @@ public class EncryptDecryptTest {
     @Test
     void Decrypt() {
         // 将 Long 转换为 BigDecimal
-        //Long longValue = 111L;
-        //BigDecimal bigDecimalValue = new BigDecimal(longValue);
+        // Long longValue = 111L;
+        // BigDecimal bigDecimalValue = new BigDecimal(longValue);
         //
         //// 打印结果
-        //System.out.println("Long value: " + longValue);
-        //System.out.println("BigDecimal value: " + bigDecimalValue);
+        // System.out.println("Long value: " + longValue);
+        // System.out.println("BigDecimal value: " + bigDecimalValue);
         //
-        //BigDecimal bigDecimal = BigDecimal.valueOf(longValue);
-        //System.out.println("bigDecimal = " + bigDecimal);
-        //String data = "13zzaWBGTA";
-        //String decodeStr = Base62.decodeStr(data);
-        //System.out.println("decodeStr = " + decodeStr);
+        // BigDecimal bigDecimal = BigDecimal.valueOf(longValue);
+        // System.out.println("bigDecimal = " + bigDecimal);
+        // String data = "13zzaWBGTA";
+        // String decodeStr = Base62.decodeStr(data);
+        // System.out.println("decodeStr = " + decodeStr);
         //
-        //System.out.println("bigDecimal.add(new BigDecimal(\"112\")) = " + bigDecimal.add(new BigDecimal("112")));
+        // System.out.println("bigDecimal.add(new BigDecimal(\"112\")) = " + bigDecimal.add(new BigDecimal("112")));
 
-        //DecimalFormat format = new DecimalFormat("0.00%");
-        //BigDecimal decimal = new BigDecimal("0.006");
-        //String percent = format.format(decimal);
-        //System.out.println("percent = " + percent);
+        // DecimalFormat format = new DecimalFormat("0.00%");
+        // BigDecimal decimal = new BigDecimal("0.006");
+        // String percent = format.format(decimal);
+        // System.out.println("percent = " + percent);
         //
         //// 去除百分号，并将字符串转换为 BigDecimal
-        //String cleanedString = "0.3%".replace("%", "");
-        //BigDecimal divide = new BigDecimal(cleanedString).divide(new BigDecimal("100"));
-        //System.out.println("divide = " + divide);
+        // String cleanedString = "0.3%".replace("%", "");
+        // BigDecimal divide = new BigDecimal(cleanedString).divide(new BigDecimal("100"));
+        // System.out.println("divide = " + divide);
         //
-        //System.out.println("!StrUtil.endWith(\"0.03%\", \"%\") = " + StrUtil.endWith("0.03%", "%"));
+        // System.out.println("!StrUtil.endWith(\"0.03%\", \"%\") = " + StrUtil.endWith("0.03%", "%"));
         //
-        //Assert.isTrue(false,"shibai");
+        // Assert.isTrue(false,"shibai");
 
         BigDecimal decimal1 = new BigDecimal("90");
         BigDecimal decimal2 = new BigDecimal("89");

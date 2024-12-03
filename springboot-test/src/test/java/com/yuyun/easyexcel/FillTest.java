@@ -173,8 +173,8 @@ public class FillTest {
         //
         String templateFileName = resource.getPath();
         ////templateFileName = path + "composite.xlsx";;
-        //String fileName = path + "compositeFill" + System.currentTimeMillis() + ".xlsx";
-        //templateFileName =
+        // String fileName = path + "compositeFill" + System.currentTimeMillis() + ".xlsx";
+        // templateFileName =
         //        TestFileUtil.getPath() + "demo" + File.separator + "composite.xlsx";
         String fileName = TestFileUtil.getPath() + "compositeFill" + System.currentTimeMillis() + ".xlsx";
         // 方案1
@@ -203,7 +203,7 @@ public class FillTest {
             excelWriter.fill(new FillWrapper("data4", data4()), writeSheet);
 
             Map<String, Object> map = new HashMap<String, Object>();
-            //map.put("date", "2019年10月9日13:28:28");
+            // map.put("date", "2019年10月9日13:28:28");
             map.put("date", new Date());
             map.put("list", data());
 

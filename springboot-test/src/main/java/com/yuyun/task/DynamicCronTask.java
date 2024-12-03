@@ -3,7 +3,6 @@ package com.yuyun.task;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.scheduling.support.CronExpression;
 import org.springframework.scheduling.support.CronSequenceGenerator;
@@ -27,7 +26,7 @@ import java.util.concurrent.ScheduledFuture;
 public class DynamicCronTask implements InitializingBean {
 
     @Autowired
-    @Qualifier("MyTaskScheduler")
+    // @Qualifier("MyTaskScheduler")
     private ThreadPoolTaskScheduler taskScheduler;
 
     private Map<String, ScheduledFuture<?>> scheduledFutureMap;
@@ -37,8 +36,8 @@ public class DynamicCronTask implements InitializingBean {
 
         scheduledFutureMap = new HashMap<>();
 
-        scheduledFutureMap.put("2", register("1,21,42 * * * * ?", "2"));
-        scheduledFutureMap.put("3", registerNew("11,32,53 * * * * ?", "3"));
+        // scheduledFutureMap.put("2", register("1,21,42 * * * * ?", "2"));
+        // scheduledFutureMap.put("3", registerNew("11,32,53 * * * * ?", "3"));
 
 //        scheduledFutureMap.put("a",register("* * * * * ?","task1"));
 //        scheduledFutureMap.put("b",register("*/2 * * * * ?","task2"));
@@ -80,13 +79,13 @@ public class DynamicCronTask implements InitializingBean {
         log.info("cron:[{}]是合法的吗:[{}]", cron, validExpression);
 
         CronExpression expression = CronExpression.parse(cron);
-        //下次预计的执行时间
+        // 下次预计的执行时间
         LocalDateTime next = expression.next(LocalDateTime.now());
 
         if (null != next) {
-            //下下次预计的执行时间
+            // 下下次预计的执行时间
             LocalDateTime next2 = expression.next(next);
-            //获取执行间隔
+            // 获取执行间隔
             long interval = ChronoUnit.SECONDS.between(next, next2);
 
             log.info("定时任务下次执行的时间为:[{}]", next);

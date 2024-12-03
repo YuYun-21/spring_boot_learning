@@ -30,7 +30,7 @@ class FirstPassHandler extends AbstractHandler {
         System.out.println("第一关-->FirstPassHandler");
         int score = play();
         if (score >= 80) {
-            //分数>=80 并且存在下一关才进入下一关
+            // 分数>=80 并且存在下一关才进入下一关
             if (this.next != null) {
                 this.next.handler();
             }
@@ -49,7 +49,7 @@ class SecondPassHandler extends AbstractHandler {
 
         int score = play();
         if (score >= 90) {
-            //分数>=90 并且存在下一关才进入下一关
+            // 分数>=90 并且存在下一关才进入下一关
             if (this.next != null) {
                 this.next.handler();
             }
@@ -68,7 +68,7 @@ class ThirdPassHandler extends AbstractHandler {
         System.out.println("第三关-->ThirdPassHandler");
         int score = play();
         if (score >= 95) {
-            //分数>=95 并且存在下一关才进入下一关
+            // 分数>=95 并且存在下一关才进入下一关
             if (this.next != null) {
                 this.next.handler();
             }
@@ -84,22 +84,22 @@ class ThirdPassHandler extends AbstractHandler {
  */
 public class HandlerClient {
     public static void main(String[] args) {
-        //第一关
+        // 第一关
         FirstPassHandler firstPassHandler = new FirstPassHandler();
-        //第二关
+        // 第二关
         SecondPassHandler secondPassHandler = new SecondPassHandler();
-        //第三关
+        // 第三关
         ThirdPassHandler thirdPassHandler = new ThirdPassHandler();
 
         // 和上面没有更改的客户端代码相比，只有这里的set方法发生变化，其他都是一样的
-        //第一关的下一关是第二关
+        // 第一关的下一关是第二关
         firstPassHandler.setNext(secondPassHandler);
-        //第二关的下一关是第三关
+        // 第二关的下一关是第三关
         secondPassHandler.setNext(thirdPassHandler);
 
-        //说明：因为第三关是最后一关，因此没有下一关
+        // 说明：因为第三关是最后一关，因此没有下一关
 
-        //从第一个关卡开始
+        // 从第一个关卡开始
         firstPassHandler.handler();
     }
 }

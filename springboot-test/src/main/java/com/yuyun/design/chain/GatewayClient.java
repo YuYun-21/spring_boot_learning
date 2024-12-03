@@ -8,6 +8,39 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+@Getter
+enum GatewayEnum {
+    // handlerId, 拦截者名称，全限定类名，上一个handler，下一个handler
+    API_HANDLER(new GatewayEntity(1, "api接口限流", "com.yuyun.design.chain.ApiLimitGatewayHandler", null, 2)),
+    BLACKLIST_HANDLER(new GatewayEntity(2, "黑名单拦截", "com.yuyun.design.chain.BlacklistGatewayHandler", 1, 3)),
+    SESSION_HANDLER(new GatewayEntity(3, "用户会话拦截", "com.yuyun.design.chain.SessionGatewayHandler", 2, null)),
+    ;
+
+    GatewayEntity gatewayEntity;
+
+    GatewayEnum(GatewayEntity gatewayEntity) {
+        this.gatewayEntity = gatewayEntity;
+    }
+}
+
+interface GatewayDao {
+
+    /**
+     * 根据 handlerId 获取配置项
+     *
+     * @param handlerId
+     * @return
+     */
+    GatewayEntity getGatewayEntity(Integer handlerId);
+
+    /**
+     * 获取第一个处理者
+     *
+     * @return
+     */
+    GatewayEntity getFirstGatewayEntity();
+}
+
 @Data
 @AllArgsConstructor
 class GatewayEntity {
@@ -29,40 +62,6 @@ class GatewayEntity {
      * 下一个handler
      */
     private Integer nextHandlerId;
-}
-
-@Getter
-enum GatewayEnum {
-    // handlerId, 拦截者名称，全限定类名，上一个handler，下一个handler
-    API_HANDLER(new GatewayEntity(1, "api接口限流", "com.yuyun.design.chain.ApiLimitGatewayHandler", null, 2)),
-    BLACKLIST_HANDLER(new GatewayEntity(2, "黑名单拦截", "com.yuyun.design.chain.BlacklistGatewayHandler", 1, 3)),
-    SESSION_HANDLER(new GatewayEntity(3, "用户会话拦截", "com.yuyun.design.chain.SessionGatewayHandler", 2, null)),
-    ;
-
-    GatewayEntity gatewayEntity;
-
-    GatewayEnum(GatewayEntity gatewayEntity) {
-        this.gatewayEntity = gatewayEntity;
-    }
-}
-
-
-interface GatewayDao {
-
-    /**
-     * 根据 handlerId 获取配置项
-     *
-     * @param handlerId
-     * @return
-     */
-    GatewayEntity getGatewayEntity(Integer handlerId);
-
-    /**
-     * 获取第一个处理者
-     *
-     * @return
-     */
-    GatewayEntity getFirstGatewayEntity();
 }
 
 class GatewayImpl implements GatewayDao {

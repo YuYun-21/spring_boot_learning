@@ -9,14 +9,11 @@ import java.util.Objects;
 /**
  * 合并列单元格处理程序
  * <br> 从 起始行 开始，经过多少行结束，合并多少列
+ *
  * @author hyh
  * @date 2024/02/21
  */
 public class MergeCellHandler2 implements RowWriteHandler {
-    /**
-     * 起始行
-     */
-    private int startRowIndex;
     /**
      * 从 起始行 开始，经过多少行结束
      */
@@ -25,6 +22,10 @@ public class MergeCellHandler2 implements RowWriteHandler {
      * 需要合并的列数
      */
     private final int cellNum;
+    /**
+     * 起始行
+     */
+    private int startRowIndex;
 
     public MergeCellHandler2(int startRowIndex, int rowSum, int cellNum) {
         if (startRowIndex >= 0 && rowSum >= 0 && cellNum >= 0) {

@@ -1,6 +1,28 @@
 package com.yuyun.design.factory;
 
 /**
+ * 日志记录器接口：抽象产品
+ */
+interface Logger {
+    /**
+     * 写入日志
+     */
+    public void writeLog();
+}
+
+/**
+ * 日志记录器工厂接口：抽象工厂
+ */
+interface LoggerFactory {
+    /**
+     * 创建记录器
+     *
+     * @return {@link Logger}
+     */
+    public Logger createLogger();
+}
+
+/**
  * 工厂方法模式
  *
  * @author hyh
@@ -10,21 +32,11 @@ public class MethodClient {
     public static void main(String[] args) {
         LoggerFactory factory;
         Logger logger;
-        //可引入配置文件实现
+        // 可引入配置文件实现
         factory = new FileLoggerFactory();
         logger = factory.createLogger();
         logger.writeLog();
     }
-}
-
-/**
- * 日志记录器接口：抽象产品
- */
-interface Logger {
-    /**
-     * 写入日志
-     */
-    public void writeLog();
 }
 
 /**
@@ -46,26 +58,14 @@ class FileLogger implements Logger {
 }
 
 /**
- * 日志记录器工厂接口：抽象工厂
- */
-interface LoggerFactory {
-    /**
-     * 创建记录器
-     *
-     * @return {@link Logger}
-     */
-    public Logger createLogger();
-}
-
-/**
  * 数据库日志记录器工厂类：具体工厂
  */
 class DatabaseLoggerFactory implements LoggerFactory {
     public Logger createLogger() {
-        //连接数据库，代码省略
-        //创建数据库日志记录器对象
+        // 连接数据库，代码省略
+        // 创建数据库日志记录器对象
         Logger logger = new DatabaseLogger();
-        //初始化数据库日志记录器，代码省略
+        // 初始化数据库日志记录器，代码省略
         return logger;
     }
 }
@@ -75,9 +75,9 @@ class DatabaseLoggerFactory implements LoggerFactory {
  */
 class FileLoggerFactory implements LoggerFactory {
     public Logger createLogger() {
-        //创建文件日志记录器对象
+        // 创建文件日志记录器对象
         Logger logger = new FileLogger();
-        //创建文件，代码省略
+        // 创建文件，代码省略
         return logger;
     }
 }

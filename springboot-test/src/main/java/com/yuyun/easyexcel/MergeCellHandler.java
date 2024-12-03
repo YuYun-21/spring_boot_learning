@@ -22,13 +22,13 @@ public class MergeCellHandler implements RowWriteHandler {
      */
     private final int relativeRowIndex;
     /**
-     * 起始列
-     */
-    private int firstColIndex;
-    /**
      * 每次需要合并的列数
      */
     private final List<Integer> colIndexList;
+    /**
+     * 起始列
+     */
+    private int firstColIndex;
 
     public MergeCellHandler(int relativeRowIndex, int startCellIndex, List<Integer> colIndexList) {
         if (relativeRowIndex >= 0 && startCellIndex >= 0 && CollUtil.isNotEmpty(colIndexList)) {

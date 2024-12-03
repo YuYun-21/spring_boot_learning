@@ -1,21 +1,6 @@
 package com.yuyun.design.factory;
 
 /**
- * 简单工厂模式
- *
- * @author hyh
- * @since 2024-02-26
- */
-public class SimpleClient {
-    public static void main(String[] args) {
-        Chart chart;
-        //通过静态工厂方法创建产品
-        chart = ChartFactory.getChart("histogram");
-        chart.display();
-    }
-}
-
-/**
  * 抽象图表接口：抽象产品类
  */
 interface Chart {
@@ -26,12 +11,28 @@ interface Chart {
 }
 
 /**
+ * 简单工厂模式
+ *
+ * @author hyh
+ * @since 2024-02-26
+ */
+public class SimpleClient {
+    public static void main(String[] args) {
+        Chart chart;
+        // 通过静态工厂方法创建产品
+        chart = ChartFactory.getChart("histogram");
+        chart.display();
+    }
+}
+
+/**
  * 柱状图类：具体产品类
  */
 class HistogramChart implements Chart {
     public HistogramChart() {
         System.out.println("创建柱状图！");
     }
+
     public void display() {
         System.out.println("显示柱状图！");
     }
@@ -44,6 +45,7 @@ class PieChart implements Chart {
     public PieChart() {
         System.out.println("创建饼状图！");
     }
+
     public void display() {
         System.out.println("显示饼状图！");
     }
@@ -56,6 +58,7 @@ class LineChart implements Chart {
     public LineChart() {
         System.out.println("创建折线图！");
     }
+
     public void display() {
         System.out.println("显示折线图！");
     }
@@ -73,12 +76,10 @@ class ChartFactory {
         if (type.equalsIgnoreCase("histogram")) {
             chart = new HistogramChart();
             System.out.println("初始化设置柱状图！");
-        }
-        else if (type.equalsIgnoreCase("pie")) {
+        } else if (type.equalsIgnoreCase("pie")) {
             chart = new PieChart();
             System.out.println("初始化设置饼状图！");
-        }
-        else if (type.equalsIgnoreCase("line")) {
+        } else if (type.equalsIgnoreCase("line")) {
             chart = new LineChart();
             System.out.println("初始化设置折线图！");
         }

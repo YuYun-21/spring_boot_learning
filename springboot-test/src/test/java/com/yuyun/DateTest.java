@@ -24,11 +24,11 @@ public class DateTest {
         String dateStr2 = "2017-05-01 23:33:23";
         Date date2 = DateUtil.parse(dateStr2);
 
-        //相差一个月，31天
+        // 相差一个月，31天
         long betweenDay = DateUtil.between(date1, date2, DateUnit.DAY);
         System.out.println("betweenDay = " + betweenDay);
 
-        //相差一个月，31天
+        // 相差一个月，31天
         long betweenDays = DateUtil.between(date1, date2, DateUnit.SECOND);
         System.out.println("betweenDay = " + betweenDays);
 
