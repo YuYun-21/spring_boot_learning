@@ -14,6 +14,6 @@ public class Test {
         System.out.println("yuyunApplicationContext.getBean(\"userService\") = " + yuyunApplicationContext.getBean("userService"));
         System.out.println("yuyunApplicationContext.getBean(\"userService\") = " + yuyunApplicationContext.getBean("userService"));
         System.out.println("yuyunApplicationContext.getBean(\"userService\") = " + yuyunApplicationContext.getBean("userService"));
-        System.out.println("yuyunApplicationContext.getBean(\"userService\") = " + yuyunApplicationContext.getBean("userService"));
+        System.out.println("yuyunApplicationContext.getBean(\"userService\") = " + yuyunApplicationContext.getBean("orderService"));
     }
 }

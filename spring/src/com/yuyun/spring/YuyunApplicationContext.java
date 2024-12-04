@@ -1,5 +1,6 @@
 package com.yuyun.spring;
 
+import java.beans.Introspector;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
@@ -62,17 +63,22 @@ public class YuyunApplicationContext {
                             Class<?> clazz = classLoader.loadClass(className);
                             // 判断是否加了Component注解
                             if (clazz.isAnnotationPresent(Component.class)) {
-                                // 类上有Component注解，定义了这个类为Bean，创建BeanDefinition对象 单例Bean直接创建，多例Bean不创建
-                                BeanDefinition beanDefinition = new BeanDefinition();
-                                beanDefinition.setType(clazz);
-
-                                // 判断是否加了Scope注解 是单例还是多例
-                                beanDefinition.setScope(clazz.isAnnotationPresent(Scope.class) ? clazz.getAnnotation(Scope.class).value() : "singleton");
-
                                 // 拿到注解
                                 Component componentAnnotation = clazz.getAnnotation(Component.class);
                                 // 拿到注解的值作为bean的名称
                                 String beanName = componentAnnotation.value();
+
+                                if ("".equals(beanName)) {
+                                    // 首字母大写改为小写 第1个字母和第2个字母大写时不管
+                                    beanName = Introspector.decapitalize(clazz.getSimpleName());
+                                }
+
+                                // 类上有Component注解，定义了这个类为Bean，创建BeanDefinition对象 单例Bean直接创建，多例Bean不创建
+                                BeanDefinition beanDefinition = new BeanDefinition();
+                                beanDefinition.setType(clazz);
+
+                                // 判断是单例还是多例 没加Scope注解为单例
+                                beanDefinition.setScope(clazz.isAnnotationPresent(Scope.class) ? clazz.getAnnotation(Scope.class).value() : "singleton");
 
                                 // 放入Bean定义池
                                 beanDefinitionMap.put(beanName, beanDefinition);
