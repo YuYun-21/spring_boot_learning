@@ -2,6 +2,7 @@ package com.yuyun.spring;
 
 import java.beans.Introspector;
 import java.io.File;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.concurrent.ConcurrentHashMap;
@@ -117,6 +118,17 @@ public class YuyunApplicationContext {
         try {
             // 无参构造器 创建bean
             Object instance = clazz.getConstructor().newInstance();
+
+            // 依赖注入 为加了Autowired注解的字段注入属性
+            for (Field field : clazz.getDeclaredFields()) {
+                // 判断是否加了Autowired注解
+                if (field.isAnnotationPresent(Autowired.class)) {
+                    // 如果是private
+                    field.setAccessible(true);
+                    // 属性赋值
+                    field.set(instance, getBean(field.getName()));
+                }
+            }
 
             return instance;
         } catch (InvocationTargetException e) {
