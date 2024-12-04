@@ -130,9 +130,14 @@ public class YuyunApplicationContext {
                 }
             }
 
-            // aware回调 设置bean名称
+            // aware回调 spring调用方法设置值 设置bean名称
             if (instance instanceof BeanNameAware) {
                 ((BeanNameAware) instance).setBeanName(beanName);
+            }
+
+            // 初始化 spring只调用方法
+            if (instance instanceof InitializingBean) {
+                ((InitializingBean) instance).afterPropertiesSet();
             }
 
             return instance;
