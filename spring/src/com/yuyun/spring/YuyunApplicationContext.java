@@ -5,6 +5,8 @@ import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -24,6 +26,8 @@ public class YuyunApplicationContext {
      * 单例池 Map key:beanName value:Object
      */
     private ConcurrentHashMap<String, Object> singletonObjectMap = new ConcurrentHashMap();
+
+    private List<BeanPostProcessor> beanPostProcessorList = new ArrayList<>();
 
     public YuyunApplicationContext(Class configClass) {
         this.configClass = configClass;
@@ -64,6 +68,13 @@ public class YuyunApplicationContext {
                             Class<?> clazz = classLoader.loadClass(className);
                             // 判断是否加了Component注解
                             if (clazz.isAnnotationPresent(Component.class)) {
+
+                                // clazz是不是由BeanPostProcessor派生的
+                                if (BeanPostProcessor.class.isAssignableFrom(clazz)) {
+                                    BeanPostProcessor instance = (BeanPostProcessor) clazz.newInstance();
+                                    beanPostProcessorList.add(instance);
+                                }
+
                                 // 拿到注解
                                 Component componentAnnotation = clazz.getAnnotation(Component.class);
                                 // 拿到注解的值作为bean的名称
@@ -85,6 +96,10 @@ public class YuyunApplicationContext {
                                 beanDefinitionMap.put(beanName, beanDefinition);
                             }
                         } catch (ClassNotFoundException e) {
+                            throw new RuntimeException(e);
+                        } catch (InstantiationException e) {
+                            throw new RuntimeException(e);
+                        } catch (IllegalAccessException e) {
                             throw new RuntimeException(e);
                         }
                     }
@@ -135,9 +150,19 @@ public class YuyunApplicationContext {
                 ((BeanNameAware) instance).setBeanName(beanName);
             }
 
+            // BeanPostProcessor 前置
+            for (BeanPostProcessor beanPostProcessor : beanPostProcessorList) {
+                beanPostProcessor.postProcessBeforeInitialization(beanName, instance);
+            }
+
             // 初始化 spring只调用方法
             if (instance instanceof InitializingBean) {
                 ((InitializingBean) instance).afterPropertiesSet();
+            }
+
+            // BeanPostProcessor 后置
+            for (BeanPostProcessor beanPostProcessor : beanPostProcessorList) {
+                beanPostProcessor.postProcessAfterInitialization(beanName, instance);
             }
 
             return instance;
