@@ -152,7 +152,7 @@ public class YuyunApplicationContext {
 
             // BeanPostProcessor 前置
             for (BeanPostProcessor beanPostProcessor : beanPostProcessorList) {
-                beanPostProcessor.postProcessBeforeInitialization(beanName, instance);
+                instance = beanPostProcessor.postProcessBeforeInitialization(beanName, instance);
             }
 
             // 初始化 spring只调用方法
@@ -162,7 +162,7 @@ public class YuyunApplicationContext {
 
             // BeanPostProcessor 后置
             for (BeanPostProcessor beanPostProcessor : beanPostProcessorList) {
-                beanPostProcessor.postProcessAfterInitialization(beanName, instance);
+                instance = beanPostProcessor.postProcessAfterInitialization(beanName, instance);
             }
 
             return instance;

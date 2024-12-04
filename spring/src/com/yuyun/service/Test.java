@@ -10,7 +10,7 @@ public class Test {
 
     public static void main(String[] args) {
         YuyunApplicationContext yuyunApplicationContext = new YuyunApplicationContext(AppConfig.class);
-        UserService userService = (UserService) yuyunApplicationContext.getBean("userService");
+        UserInterface userService = (UserInterface) yuyunApplicationContext.getBean("userService");
         userService.test();
     }
 }

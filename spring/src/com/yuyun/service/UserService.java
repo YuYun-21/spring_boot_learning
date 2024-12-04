@@ -10,7 +10,7 @@ import com.yuyun.spring.InitializingBean;
  * @since 2024-12-03
  */
 @Component
-public class UserService implements BeanNameAware, InitializingBean {
+public class UserService implements BeanNameAware, InitializingBean, UserInterface {
 
     @Autowired
     private OrderService orderService;
@@ -32,6 +32,7 @@ public class UserService implements BeanNameAware, InitializingBean {
         System.out.println("userService afterPropertiesSet");
     }
 
+    @Override
     public void test() {
         System.out.println("userService test：" + orderService);
     }
