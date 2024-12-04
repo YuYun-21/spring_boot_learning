@@ -130,6 +130,11 @@ public class YuyunApplicationContext {
                 }
             }
 
+            // aware回调 设置bean名称
+            if (instance instanceof BeanNameAware) {
+                ((BeanNameAware) instance).setBeanName(beanName);
+            }
+
             return instance;
         } catch (InvocationTargetException e) {
             throw new RuntimeException(e);
